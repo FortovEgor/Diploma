@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ShareItServer {
-
+public class DiplomaProfiles {
 	public static void main(String[] args) {
-		SpringApplication.run(ShareItServer.class, args);
+		SpringApplication.run(DiplomaProfiles.class, args);
 	}
 
 }

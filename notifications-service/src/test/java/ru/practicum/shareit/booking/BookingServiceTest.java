@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
-import ru.practicum.shareit.ShareItServer;
+import ru.practicum.shareit.DiplomaNotifications;
 import ru.practicum.shareit.booking.dao.BookingRepository;
 import ru.practicum.shareit.booking.dto.CreateBookingRequest;
 import ru.practicum.shareit.exception.BadRequest;
@@ -36,7 +36,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = ShareItServer.class)
+@ContextConfiguration(classes = DiplomaNotifications.class)
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class BookingServiceTest {
