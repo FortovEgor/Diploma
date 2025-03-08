@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: profiles-service
+  datasource:
+    url: jdbc:postgresql://localhost:6431/duties_db
+    username: duties_user
+    password: duties_pass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

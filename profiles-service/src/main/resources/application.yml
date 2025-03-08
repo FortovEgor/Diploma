@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: profiles-service
+  datasource:
+    url: jdbc:postgresql://localhost:6431/profiles_db
+    username: profiles_user
+    password: profiles_pass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 9090
+  error:
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
