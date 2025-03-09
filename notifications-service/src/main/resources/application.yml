@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: notifications-service
+  datasource:
+    url: jdbc:postgresql://localhost:6542/profiles_db
+    username: profiles_user
+    password: profiles_pass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+  mail:  # todo: place correct actual data
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-email-password
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+# NOTE: first register account to use the functional
+twilio:  # todo: place actual data here
+  account-sid: your_account_sid
+  auth-token: your_auth_token
+  phone-number: your_twilio_phone_number
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

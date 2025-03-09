@@ -6,6 +6,7 @@ import fortov.egor.diploma.user.dto.UserDtoPartial;
 import fortov.egor.diploma.user.dto.UserFullInfoDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@Valid @RequestBody NewUserRequest request) {
         User user = userService.createUser(request);
         return userMapper.toDto(user);

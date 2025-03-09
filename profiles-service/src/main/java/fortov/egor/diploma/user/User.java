@@ -1,6 +1,7 @@
 package fortov.egor.diploma.user;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "users")
 @EqualsAndHashCode(of = {"id"})
 public class User {
@@ -20,6 +22,9 @@ public class User {
 
     @Column(nullable = false, unique = true, length = 254)
     private String email;
+
+    @Column
+    private String phone;  // todo: phone format validation
 
     @Column
     private String password;

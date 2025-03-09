@@ -24,7 +24,8 @@
 		<module>profiles-service</module>
 		<module>notifications-service</module>
 		<module>duties-service</module>
-	</modules>
+        <module>userClient</module>
+    </modules>
 
 	<build>
 		<pluginManagement>

@@ -1,39 +1,84 @@
-# todo: imlpl!
-
 services:
-  gateway:
-    build: gateway
-    image: shareit-gateway
-    container_name: shareit-gateway
+  ########## business services ##########
+  duties:
+    build: duties-service
+    image: duties-service
+    container_name: duties-service
+    ports:
+      - "7070:7070"
+    depends_on:
+      - duties-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6541/duties_db
+      - SPRING_DATASOURCE_USERNAME=duties_user
+      - SPRING_DATASOURCE_PASSWORD=duties_pass
+
+  notifications:
+    build: notifications
+    image: notifications
+    container_name: notifications
     ports:
       - "8080:8080"
     depends_on:
-      - server
+      - notifications-db
     environment:
-      - SHAREIT_SERVER_URL=http://server:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6542/notifications_db
+      - SPRING_DATASOURCE_USERNAME=notifications_user
+      - SPRING_DATASOURCE_PASSWORD=notifications_pass
 
-  server:
-    build: server
-    image: shareit-server
-    container_name: shareit-server
+  profiles:
+    build: profiles
+    image: profiles
+    container_name: profiles
     ports:
       - "9090:9090"
     depends_on:
-      - db
+      - profiles-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
-      - SPRING_DATASOURCE_USERNAME=shareit
-      - SPRING_DATASOURCE_PASSWORD=shareit
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6542/profiles_db
+      - SPRING_DATASOURCE_USERNAME=profiles_user
+      - SPRING_DATASOURCE_PASSWORD=profiles_pass
 
-  db:
+  ########## DB services ##########
+  duties-db:
     image: postgres:16.1
     container_name: postgres
     ports:
       - "6541:5432"
     environment:
-      - POSTGRES_PASSWORD=shareit
-      - POSTGRES_USER=shareit
-      - POSTGRES_DB=shareit
+      - POSTGRES_PASSWORD=duties_pass
+      - POSTGRES_USER=duties_user
+      - POSTGRES_DB=duties_db
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  notifications-db:
+    image: postgres:16.1
+    container_name: postgres
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_PASSWORD=notifications_pass
+      - POSTGRES_USER=notifications_user
+      - POSTGRES_DB=notifications_db
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  profiles-db:
+    image: postgres:16.1
+    container_name: postgres
+    ports:
+      - "6543:5432"
+    environment:
+      - POSTGRES_PASSWORD=profiles_pass
+      - POSTGRES_USER=profiles_user
+      - POSTGRES_DB=profiles_db
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s

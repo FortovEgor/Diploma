@@ -2,7 +2,7 @@ spring:
   application:
     name: profiles-service
   datasource:
-    url: jdbc:postgresql://localhost:6431/profiles_db
+    url: jdbc:postgresql://localhost:6543/profiles_db
     username: profiles_user
     password: profiles_pass
   jpa:

@@ -18,6 +18,9 @@ public class NewUserRequest {
     @Size(min = 6, max = 100, message = "Почта пользователя должна содержать от 6 до 100 символов")
     private String email;
 
+    @NotNull
+    private String phone;  // todo: add constraint
+
     @NotBlank
     @Size(min=8, max = 40, message = "Пароль должен иметь длину от 8 до 40 символов")
     private String password;
