@@ -32,7 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserById(long id);
 
-    User update(User user);
+    User save(User user);
 
     List<User> findUsersByName(String name);
 
@@ -42,5 +42,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT id FROM users WHERE name = :username AND password = :password", nativeQuery = true)
     List<Long> getIdsByUsernameAndPassword(String username, String password);
 
+    @Query(value = "SELECT * FROM users WHERE id IN :ids", nativeQuery = true)
     List<User> getUsersById(List<Long> ids);
 }

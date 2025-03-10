@@ -17,5 +17,7 @@ public interface UserMapper {
 
     UserFullInfoDto toFullInfo(User user);
 
+    UserDtoPartial toDtoPartial(User user);
+
     List<UserDtoPartial> toPartial(List<User> users);
 }

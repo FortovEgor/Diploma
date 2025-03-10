@@ -16,6 +16,9 @@ target/
 ### MacOS generated files
 **/.DS_Store
 
+### Logs ###
+logs/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

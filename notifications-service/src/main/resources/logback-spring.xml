@@ -1,10 +1,13 @@
 <configuration>
 
+    <property name="LOG_FILE" value="logs/app-${PID}-${timestamp}.log" />
+    <property name="timestamp" value="${date:yyyy-MM-dd_HH-mm-ss}" />
+    <property name="PID" value="${PID}" />
+
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/app.log</file> <!-- Путь к файлу лога -->
-        <append>true</append> <!-- Добавлять в конец файла -->
+        <file>${LOG_FILE}</file>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern> <!-- Формат лога -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -13,4 +16,3 @@
     </root>
 
 </configuration>
-   

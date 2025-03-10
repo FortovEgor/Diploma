@@ -33,14 +33,14 @@ public class UserController {
         return userService.updateUser(user).getId();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public UserFullInfoDto getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return userMapper.toFullInfo(user);
     }
 
     @GetMapping
-    public List<Long> getUserIdsByName(@PathVariable String name) {
+    public List<Long> getUserIdsByName(@RequestParam(name = "name") String name) {
         List<User> users = userService.getUsersByName(name);
         List<Long> userIds = users.stream()
                 .map(User::getId)

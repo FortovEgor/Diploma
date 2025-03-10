@@ -3,13 +3,11 @@ package fortov.egor.diploma.user;
 import fortov.egor.diploma.exception.NotFoundException;
 import fortov.egor.diploma.exception.NotValidIdException;
 import fortov.egor.diploma.user.dto.NewUserRequest;
-import fortov.egor.diploma.user.dto.UserDtoPartial;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +30,7 @@ public class UserService {
         if (repo.findUserById(user.getId()) == null) {
             throw new NotFoundException("No film with such id!");
         }
-        return repo.update(user);
+        return repo.save(user);
     }
 
     public User getUserById(Long id) {
