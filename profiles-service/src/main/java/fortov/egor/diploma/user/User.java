@@ -23,7 +23,7 @@ public class User {
     private String email;
 
     @Column
-    private String phone;  // todo: phone format validation
+    private String phone;
 
     @Column
     private String password;
