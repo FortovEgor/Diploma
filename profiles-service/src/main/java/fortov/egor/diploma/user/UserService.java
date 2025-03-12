@@ -67,6 +67,7 @@ public class UserService {
         }
 
         User possibleUser = repo.findUserById(id);
+        log.info("user {} got from DB", possibleUser);
         if (possibleUser == null) {
             throw new NotFoundException("Пользователь не найден");
         }

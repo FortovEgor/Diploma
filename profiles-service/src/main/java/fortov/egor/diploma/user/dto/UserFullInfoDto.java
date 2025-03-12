@@ -1,8 +1,14 @@
 package fortov.egor.diploma.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserFullInfoDto {
     private Long id;
 
