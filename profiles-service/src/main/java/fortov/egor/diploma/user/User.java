@@ -3,8 +3,7 @@ package fortov.egor.diploma.user;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Builder
 @ToString
