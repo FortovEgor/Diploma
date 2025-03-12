@@ -2,6 +2,7 @@ package fortov.egor.diploma;
 
 import fortov.egor.diploma.dto.CreateNotificationRequest;
 import fortov.egor.diploma.dto.UpdateNotificationRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -18,12 +19,12 @@ public class NotificationsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Notification createNotification(CreateNotificationRequest request) {
+    public Notification createNotification(@Valid @RequestBody CreateNotificationRequest request) {
         return service.create(request);
     }
 
     @PutMapping
-    public Notification updateNotification(UpdateNotificationRequest request) {
+    public Notification updateNotification(@Valid @RequestBody UpdateNotificationRequest request) {
         return service.update(request);
     }
 
@@ -34,9 +35,9 @@ public class NotificationsController {
         return null;
     }
 
-    @DeleteMapping("/{notificationIds}")
+    @DeleteMapping("/array/{notificationIds}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Void deleteNotifications(@PathVariable List<Long> notificationIds) {  // todo: check - is this correct path variable ?
+    public Void deleteNotifications(@PathVariable List<Long> notificationIds) {
         service.delete(notificationIds);
         return null;
     }

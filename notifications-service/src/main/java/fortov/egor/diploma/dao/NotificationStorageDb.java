@@ -3,6 +3,7 @@ package fortov.egor.diploma.dao;
 import fortov.egor.diploma.Notification;
 import fortov.egor.diploma.storage.NotificationsStorage;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -25,13 +26,13 @@ public class NotificationStorageDb implements NotificationsStorage {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> {
-                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"film_id"});
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
                     ps.setString(1, notification.getType());
                     ps.setString(2, notification.getContent());
                     ps.setObject(3, notification.getTime_to_show());
-                    ps.setObject(4, notification.getInterval_to_repeat());
+                    ps.setLong(4, notification.getInterval_to_repeat().toSeconds());
                     ps.setLong(5, notification.getUserId());
-                    ps.setBoolean(5, notification.getImmediately());
+                    ps.setBoolean(6, notification.getImmediately());
                     return ps;
                 }, keyHolder);
         notification.setId(keyHolder.getKey().longValue());
@@ -54,31 +55,34 @@ public class NotificationStorageDb implements NotificationsStorage {
     public Notification findById(Long notificationId) {
         String sql = "SELECT id, type, content, time_to_show, interval_to_repeat, user_id, immediately " +
                 "FROM notifications WHERE id = ? LIMIT 1";
-        return (Notification) jdbcTemplate.query(sql,
-                (ResultSet rs, int rowNum) -> Notification.builder()
-                        .id(rs.getLong(1))
-                        .type(rs.getString(2))
-                        .content(rs.getString(3))
-                        .time_to_show((LocalDateTime) rs.getObject(4))
-                        .interval_to_repeat((Duration) rs.getObject(5))
-                        .userId(rs.getLong(6))
-                        .immediately(rs.getBoolean(7))
-                        .build(), notificationId);
+        List<Notification> notifications = jdbcTemplate.query(sql,
+                            (ResultSet rs, int rowNum) -> Notification.builder()
+                                    .id(rs.getLong("id"))
+                                    .type(rs.getString("type"))
+                                    .content(rs.getString("content"))
+                                    .time_to_show(rs.getTimestamp("time_to_show").toLocalDateTime())
+                                    .interval_to_repeat(Duration.ofSeconds(rs.getLong("interval_to_repeat")))
+                                    .userId(rs.getLong("user_id"))
+                                    .immediately(rs.getBoolean("immediately"))
+                                    .build(), notificationId);
+        if (notifications.isEmpty()) return null;
+        return notifications.getFirst();
     }
 
     @Override
     public List<Notification> findAllById(List<Long> notificationsIds) {
         String sql = "SELECT id, type, content, time_to_show, interval_to_repeat, user_id, immediately " +
                 "FROM notifications WHERE id = ANY(?)";
+        Long[] idsArray = notificationsIds.toArray(new Long[0]);
         return jdbcTemplate.query(sql,
                 (ResultSet rs, int rowNum) -> Notification.builder()
-                        .id(rs.getLong(1))
-                        .type(rs.getString(2))
-                        .content(rs.getString(3))
-                        .time_to_show((LocalDateTime) rs.getObject(4))
-                        .interval_to_repeat((Duration) rs.getObject(5))
-                        .userId(rs.getLong(6))
-                        .immediately(rs.getBoolean(7))
-                        .build(), notificationsIds);
+                        .id(rs.getLong("id"))
+                        .type(rs.getString("type"))
+                        .content(rs.getString("content"))
+                        .time_to_show(rs.getTimestamp("time_to_show").toLocalDateTime())
+                        .interval_to_repeat(Duration.ofSeconds(rs.getLong("interval_to_repeat")))
+                        .userId(rs.getLong("user_id"))
+                        .immediately(rs.getBoolean("immediately"))
+                        .build(), new Object[]{idsArray});
     }
 }

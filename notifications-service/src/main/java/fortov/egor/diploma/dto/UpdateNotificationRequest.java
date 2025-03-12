@@ -14,7 +14,7 @@ public class UpdateNotificationRequest {
 
     private String content;
 
-    private String time_to_show;  // todo: phone format validation\
+    private String time_to_show;
 
     private Duration interval_to_repeat;
 

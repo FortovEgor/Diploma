@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Private Keys ###
+application-prod.*
+
 ### STS ###
 .apt_generated
 .classpath

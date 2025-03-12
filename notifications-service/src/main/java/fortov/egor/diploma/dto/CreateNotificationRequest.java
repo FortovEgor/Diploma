@@ -19,11 +19,11 @@ public class CreateNotificationRequest {
     @NotNull
     private String content;
 
-    private String time_to_show;  // todo: phone format validation\
+    private String time_to_show;
 
     private Duration interval_to_repeat;
 
-    @NotBlank
+    @NotNull
     private Long userId;
 
     private Boolean immediately;

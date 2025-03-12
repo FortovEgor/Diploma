@@ -5,7 +5,7 @@ CREATE TABLE notifications (
     type VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
     time_to_show TIMESTAMP,
-    interval_to_repeat INTERVAL,
+    interval_to_repeat BIGINT,  -- seconds
     user_id BIGINT NOT NULL,
     immediately BOOLEAN DEFAULT false
 
