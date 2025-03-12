@@ -1,7 +1,6 @@
 package fortov.egor.diploma;
 
 import fortov.egor.diploma.sendingServices.SendingService;
-import fortov.egor.diploma.user.User;
 import fortov.egor.diploma.user.dto.UserFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class NotificationsManager {
                         processingService.send(receiver, notification.getContent());
                 } else {
                     Duration timeToWaitForFirstSending =
-                            Duration.between(notification.getTimeToShow(), LocalDateTime.now());
+                            Duration.between(notification.getTime_to_show(), LocalDateTime.now());
                     if (timeToWaitForFirstSending.isPositive()) {
                         Thread.sleep(timeToWaitForFirstSending);
                     }
@@ -72,7 +71,7 @@ public class NotificationsManager {
 
             log.debug("notification {} sent", notification);
             firstIter = false;
-            Thread.sleep(notification.getIntervalToRepeat());
+            Thread.sleep(notification.getInterval_to_repeat());
         }
     }
 

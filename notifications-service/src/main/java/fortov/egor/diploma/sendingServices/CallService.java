@@ -4,10 +4,12 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.type.PhoneNumber;
 import fortov.egor.diploma.user.dto.UserFullInfoDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 
 
+@Slf4j
 @Service
 public class CallService extends SendingServiceTemplate {
     @Value("${twilio.account-sid}")
@@ -21,7 +23,13 @@ public class CallService extends SendingServiceTemplate {
 
 
     CallService() {
-        Twilio.init(accountSid, authToken);
+        super("call");
+        try {
+            Twilio.init(accountSid, authToken);
+        } catch (RuntimeException e) {
+            log.error("Failed to init Twilio connection: " + e +
+                    " | call & sms notifications will not be delivered");
+        }
     }
     @Override
     public void send(UserFullInfoDto receiver, String content) {

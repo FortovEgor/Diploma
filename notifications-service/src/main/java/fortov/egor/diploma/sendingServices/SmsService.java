@@ -33,7 +33,13 @@ public class SmsService extends SendingServiceTemplate {
 
 
     SmsService() {
-        Twilio.init(accountSid, authToken);
+        super("sms");
+        try {
+            Twilio.init(accountSid, authToken);
+        } catch (RuntimeException e) {
+            log.error("Failed to init Twilio connection: " + e +
+                    " | call & sms notifications will not be delivered");
+        }
     }
     @Override
     public void send(UserFullInfoDto receiver, String content) {

@@ -19,9 +19,9 @@ public class CreateNotificationRequest {
     @NotNull
     private String content;
 
-    private String timeToShow;  // todo: phone format validation\
+    private String time_to_show;  // todo: phone format validation\
 
-    private Duration intervalToRepeat;
+    private Duration interval_to_repeat;
 
     @NotBlank
     private Long userId;

@@ -3,6 +3,7 @@ package fortov.egor.diploma;
 import fortov.egor.diploma.dto.CreateNotificationRequest;
 import fortov.egor.diploma.dto.UpdateNotificationRequest;
 import fortov.egor.diploma.exception.NotFoundException;
+import fortov.egor.diploma.storage.NotificationsStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class NotificationsService {
-    private final NotificationsRepository repo;
+    private final NotificationsStorage repo;
     private final NotificationsMapper mapper;
     private final NotificationsManager manager;
 
@@ -40,8 +41,10 @@ public class NotificationsService {
     @Transactional
     public void delete(Long notificationId) {
         log.info("deleting notification with id = {}", notificationId);
-        Notification notification = repo.findById(notificationId)
-                .orElseThrow(() -> new NotFoundException("Уведомление с id = " + notificationId + " не найдено"));
+        Notification notification = repo.findById(notificationId);
+        if (notification == null) {
+            throw new NotFoundException("Уведомление с id = " + notificationId + " не найдено");
+        }
         log.debug("deleting notification with id = {} from DB", notificationId);
         repo.deleteById(notificationId);
         log.debug("deleting notification with id = {} from manager", notificationId);

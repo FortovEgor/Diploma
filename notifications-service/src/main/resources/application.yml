@@ -2,9 +2,9 @@ spring:
   application:
     name: notifications-service
   datasource:
-    url: jdbc:postgresql://localhost:6542/profiles_db
-    username: profiles_user
-    password: profiles_pass
+    url: jdbc:postgresql://localhost:6542/notifications_db
+    username: notifications_user
+    password: notifications_pass
   jpa:
     hibernate:
       ddl-auto: validate
@@ -26,7 +26,7 @@ spring:
 server:
   port: 8080
   error:
-    include-stacktrace: never
+    include-stacktrace: always
 
 # NOTE: first register account to use the functional
 twilio:  # todo: place actual data here
