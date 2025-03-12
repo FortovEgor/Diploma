@@ -5,6 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:6543/profiles_db
     username: profiles_user
     password: profiles_pass
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate

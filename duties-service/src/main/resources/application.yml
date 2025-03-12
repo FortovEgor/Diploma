@@ -5,6 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:6541/duties_db
     username: duties_user
     password: duties_pass
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate

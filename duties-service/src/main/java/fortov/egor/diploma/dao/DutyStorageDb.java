@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Array;
 import java.sql.PreparedStatement;
+import org.postgresql.jdbc.PgArray;
 import java.sql.ResultSet;
 import java.time.Duration;
 import java.util.List;
@@ -25,13 +26,14 @@ public class DutyStorageDb implements DutyStorage {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> {
-                    PreparedStatement ps = connection.prepareStatement(sql);
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
                     ps.setObject(1, duty.getStart_time());
-                    ps.setObject(2, duty.getInterval());
+                    ps.setLong(2, duty.getInterval().toSeconds());
                     Array idsArray = connection.createArrayOf("bigint", duty.getIds());
                     ps.setArray(3, idsArray);
                     return ps;
                 }, keyHolder);
+        duty.setId(keyHolder.getKey().longValue());
         return duty;
     }
 
@@ -39,7 +41,7 @@ public class DutyStorageDb implements DutyStorage {
     public Duty update(Duty duty) {
         Long id = duty.getId();
         String sql = "UPDATE duties SET start_time = ?, interval = ?, ids = ? WHERE id = ?";
-        jdbcTemplate.update(sql, duty.getStart_time(), duty.getInterval(), duty.getIds(), id);
+        jdbcTemplate.update(sql, duty.getStart_time(), duty.getInterval().toSeconds(), duty.getIds(), id);
         return duty;
     }
 
@@ -53,23 +55,46 @@ public class DutyStorageDb implements DutyStorage {
     public List<Duty> getUserDuties(Long userId) {
         String sql = "SELECT id, start_time, interval, ids FROM duties WHERE ? = ANY(ids)";
         return jdbcTemplate.query(sql,
-                (ResultSet rs, int rowNum) -> Duty.builder()
-                        .id(rs.getLong(1))
-                        .start_time(rs.getTimestamp(2).toLocalDateTime())
-                        .interval((Duration) rs.getObject(3))
-                        .ids((Long[]) rs.getObject(4))
-                        .build(), userId);
+                (ResultSet rs, int rowNum) -> {
+                    Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
+                    return Duty.builder()
+                            .id(rs.getLong(1))
+                            .start_time(rs.getTimestamp(2).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .ids(ids)
+                            .build();
+                }, userId);
     }
 
     @Override
     public List<Duty> getDutiesByIds(List<Long> dutiesIds) {
         String sql = "SELECT * FROM duties WHERE id IN ?";
         return jdbcTemplate.query(sql,
-                (ResultSet rs, int rowNum) -> Duty.builder()
-                        .id(rs.getLong(1))
-                        .start_time(rs.getTimestamp(2).toLocalDateTime())
-                        .interval((Duration) rs.getObject(3))
-                        .ids((Long[]) rs.getObject(4))
-                        .build(), dutiesIds);
+                (ResultSet rs, int rowNum) -> {
+                    Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
+                    return Duty.builder()
+                            .id(rs.getLong(1))
+                            .start_time(rs.getTimestamp(2).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .ids(ids)
+                            .build();
+                }, dutiesIds);
+    }
+
+    @Override
+    public Duty getDutyById(Long dutyId) {
+        String sql = "SELECT * FROM duties WHERE id = ? LIMIT 1";
+        List<Duty> duties = jdbcTemplate.query(sql,
+                (ResultSet rs, int rowNum) -> {
+                    Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
+                    return Duty.builder()
+                            .id(rs.getLong(1))
+                            .start_time(rs.getTimestamp(2).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .ids(ids)
+                            .build();
+                }, dutyId);
+        if (duties.isEmpty()) return null;
+        return duties.getFirst();
     }
 }

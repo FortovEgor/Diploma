@@ -26,14 +26,19 @@ public class DutyController {
         return dutyService.updateDuty(request);
     }
 
-    @GetMapping
-    public UserDutyDto getUserDuty(@RequestParam Long userId) {
+    @GetMapping("/{dutyId}")
+    public Duty getDuty(@PathVariable Long dutyId) {
+        return dutyService.getDuty(dutyId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public UserDutyDto getUserDuty(@PathVariable Long userId) {
         return dutyService.getNextUserDuty(userId);
     }
 
     @DeleteMapping("/{dutyId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Void put(@PathVariable Long dutyId) {
+    public Void deleteDuty(@PathVariable Long dutyId) {
         dutyService.deleteDuty(dutyId);
         return null;
     }
