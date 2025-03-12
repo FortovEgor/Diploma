@@ -4,6 +4,7 @@ import fortov.egor.diploma.dto.CreateDutyRequest;
 import fortov.egor.diploma.dto.UpdateDutyRequest;
 import fortov.egor.diploma.dto.UserDutyDto;
 import fortov.egor.diploma.storage.DutyStorage;
+import fortov.egor.diploma.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,15 @@ import java.util.List;
 public class DutyService {
     private final DutyStorage dutyStorage;
     private final DutyMapper mapper;
+
+    public Duty getDuty(Long dutyId) {
+        log.info("getting duty with id = {}", dutyId);
+        Duty duty = dutyStorage.getDutyById(dutyId);
+        if (duty == null) {
+            throw new NotFoundException("Failed to find duty with id = " + dutyId);
+        }
+        return duty;
+    }
 
     @Transactional
     public Duty createDuty(CreateDutyRequest request) {

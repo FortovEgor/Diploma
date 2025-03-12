@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS duties;
 CREATE TABLE duties (
     id BIGSERIAL PRIMARY KEY,
     start_time TIMESTAMP NOT NULL,
-    interval INTERVAL NOT NULL,
+    interval BIGINT NOT NULL,  -- seconds
     ids BIGINT[]
 );
 
