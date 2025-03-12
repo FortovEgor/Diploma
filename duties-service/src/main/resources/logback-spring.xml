@@ -1,6 +1,6 @@
 <configuration>
 
-    <property name="LOG_FILE" value="logs/app-${PID}-${timestamp}.log" />
+    <property name="LOG_FILE" value="logs/duties//app-${PID}-${timestamp}.log" />
     <property name="timestamp" value="${date:yyyy-MM-dd_HH-mm-ss}" />
     <property name="PID" value="${PID}" />
 

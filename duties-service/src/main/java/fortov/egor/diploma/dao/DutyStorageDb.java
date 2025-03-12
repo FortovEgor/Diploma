@@ -1,8 +1,6 @@
 package fortov.egor.diploma.dao;
 
 import fortov.egor.diploma.Duty;
-import fortov.egor.diploma.dto.DutyDto;
-import fortov.egor.diploma.dto.UserDutyDto;
 import fortov.egor.diploma.storage.DutyStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;

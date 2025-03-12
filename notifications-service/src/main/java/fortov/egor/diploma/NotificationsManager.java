@@ -107,6 +107,6 @@ public class NotificationsManager {
     }
 
     private UserFullInfoDto getUserById(Long userId) {
-         return userClient.getUser(userId);
+        return userClient.getUser(userId);
     }
 }

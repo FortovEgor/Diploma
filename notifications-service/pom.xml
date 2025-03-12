@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>ru.practicum</groupId>
+        <groupId>fortov.egor.diploma</groupId>
         <artifactId>diploma</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -11,7 +11,7 @@
     <artifactId>notifications-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>ShareIt Server</name>
+    <name>NotificationsService</name>
 
 
     <properties>
@@ -100,14 +100,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ru.practicum</groupId>
+            <groupId>fortov.egor.diploma</groupId>
             <artifactId>profiles-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ru.practicum</groupId>
-            <artifactId>userClient</artifactId>
+            <groupId>fortov.egor.diploma</groupId>
+            <artifactId>UserClient</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -119,6 +119,12 @@
             <groupId>com.twilio.sdk</groupId>
             <artifactId>twilio</artifactId>
             <version>8.24.0</version> <!-- Проверьте последнюю версию на Maven Central -->
+        </dependency>
+        <dependency>
+            <groupId>fortov.egor.diploma</groupId>
+            <artifactId>UserClient</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

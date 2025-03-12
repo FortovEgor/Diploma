@@ -34,7 +34,7 @@ public class UserService {
         log.info("updating user with id = {}");
         User currentUserData = repo.findUserById(user.getId());
         if (currentUserData == null) {
-            throw new NotFoundException("No film with such id!");
+            throw new NotFoundException("No user with such id!");
         }
         if (user.getName() == null) {
             user.setName(currentUserData.getName());
@@ -70,7 +70,6 @@ public class UserService {
         if (possibleUser == null) {
             throw new NotFoundException("Пользователь не найден");
         }
-        log.info("Получен фильм с айди {}.", id);
         return possibleUser;
     }
 

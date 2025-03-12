@@ -6,7 +6,6 @@ import fortov.egor.diploma.dto.UserDutyDto;
 import fortov.egor.diploma.storage.DutyStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
