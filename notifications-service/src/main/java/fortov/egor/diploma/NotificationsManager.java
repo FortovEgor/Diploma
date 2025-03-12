@@ -4,6 +4,7 @@ import fortov.egor.diploma.sendingServices.SendingService;
 import fortov.egor.diploma.user.dto.UserFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -21,12 +22,13 @@ public class NotificationsManager {
     UserClient userClient;
 
     @Autowired
-    NotificationsManager(List<SendingService> sendingServices) {
+    NotificationsManager(List<SendingService> sendingServices, @Value("${users.url}") String usersServiceUrl) {
         for (SendingService service : sendingServices) {
             typeSendingServices.put(service.getType(), service);
         }
         String types = typeSendingServices.keySet().toString();
         log.debug("detected service services types: {}", types);
+        userClient = new UserClient(usersServiceUrl);
     }
 
     public void registerNotification(Notification notification) {

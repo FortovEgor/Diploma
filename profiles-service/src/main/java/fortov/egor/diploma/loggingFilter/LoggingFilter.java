@@ -32,7 +32,7 @@ public class LoggingFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
-        log.info("URI request: %s, ip addr: ", request.getRequestURI(), request.getRemoteAddr());
+        log.info("URI request: {}, ip addr: {}", request.getRequestURI(), request.getRemoteAddr());
     }
 
     @Override

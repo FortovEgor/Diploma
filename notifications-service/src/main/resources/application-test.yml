@@ -24,10 +24,18 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
 
+logging:
+  level:
+    org.springframework.jdbc.core: DEBUG
+    org.springframework.jdbc.datasource.DataSourceUtils: DEBUG
+
 server:
   port: 8080
   error:
     include-stacktrace: always
+
+users:
+  url: http://localhost:9090
 
 # NOTE: first register account to use the functional
 twilio:  # todo: place actual data here
