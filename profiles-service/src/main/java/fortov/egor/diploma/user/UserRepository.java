@@ -39,8 +39,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT id from users WHERE id IN :ids", nativeQuery = true)
     List<Long> findExistingUserIds(List<Long> ids);
 
-    @Query(value = "SELECT id FROM users WHERE name = :username AND password = :password", nativeQuery = true)
-    List<Long> getIdsByUsernameAndPassword(String username, String password);
+    @Query(value = "SELECT id FROM users WHERE email = :email AND password = :password LIMIT 1", nativeQuery = true)
+    Long getIdByEmailAndPassword(String email, String password);
 
     @Query(value = "SELECT * FROM users WHERE id IN :ids", nativeQuery = true)
     List<User> getUsersById(List<Long> ids);

@@ -32,7 +32,7 @@ public class User {
     private String organization;
 
     @Column
-    private Integer avatar;
+    private String avatar;
 
     @Column
     private String about;

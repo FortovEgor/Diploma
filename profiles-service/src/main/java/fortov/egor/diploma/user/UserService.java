@@ -75,7 +75,11 @@ public class UserService {
 
     public List<User> getUsersByName(String name) {
         log.info("getting users by name = {}", name);
-        return repo.findUsersByName(name);
+        List<User> users = repo.findUsersByName(name);
+        if (users == null) {
+            throw new NotFoundException("Failed to find any users with name " + name);
+        }
+        return users;
     }
 
     public List<Long> getNotExistingUserIds(List<Long> ids) {
@@ -86,13 +90,21 @@ public class UserService {
                 .toList();
     }
 
-    public List<Long> getUserIdsByUsernameAndPassword(String username, String password) {
-        log.info("getting user ids by username = {} & password = {}", username, password);
-        return repo.getIdsByUsernameAndPassword(username, password);
+    public Long getUserIdByEmailAndPassword(String email, String password) {
+        log.info("getting user ids by email = {} & password = {}", email, password);
+        Long id =  repo.getIdByEmailAndPassword(email, password);
+        if (id == null) {
+            throw new NotFoundException("Failed to find user with email = " + email + " and password = " + password);
+        }
+        return id;
     }
 
     public List<User> getUsersById(List<Long> ids) {
         log.info("getting users by ids = {}", ids);
-        return repo.getUsersById(ids);
+        List<User> users = repo.getUsersById(ids);
+        if (users == null) {
+            throw new NotFoundException("Failed to find any users with ids = " + ids);
+        }
+        return users;
     }
 }

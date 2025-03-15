@@ -1,6 +1,7 @@
 package fortov.egor.diploma;
 
 import fortov.egor.diploma.dto.CreateDutyRequest;
+import fortov.egor.diploma.dto.DutyDto;
 import fortov.egor.diploma.dto.UpdateDutyRequest;
 import fortov.egor.diploma.dto.UserDutyDto;
 import fortov.egor.diploma.storage.DutyStorage;
@@ -23,13 +24,20 @@ public class DutyService {
     private final DutyStorage dutyStorage;
     private final DutyMapper mapper;
 
-    public Duty getDuty(Long dutyId) {
+    public DutyDto getDuty(Long dutyId) {
         log.info("getting duty with id = {}", dutyId);
         Duty duty = dutyStorage.getDutyById(dutyId);
         if (duty == null) {
             throw new NotFoundException("Failed to find duty with id = " + dutyId);
         }
-        return duty;
+
+        return DutyDto.builder()
+                .id(duty.getId())
+                .start_time(duty.getStart_time())
+                .interval(duty.getInterval())
+                .ids(duty.getIds())
+                .currentDutyUserId(getCurrentlyDutyUserId(duty))
+                .build();
     }
 
     @Transactional
@@ -66,9 +74,6 @@ public class DutyService {
         for (Duty duty : userDuties) {
             Integer userIndexInIds = Arrays.stream(duty.getIds()).toList().indexOf(userId);
             LocalDateTime userFirstDuty = duty.getStart_time().plus(duty.getInterval().multipliedBy(userIndexInIds));
-
-            Duration diffFromDutyBeginToNow = Duration.between(duty.getStart_time(), now);
-            Duration oneUserDuration = diffFromDutyBeginToNow.dividedBy(8);
 
             if (userFirstDuty.equals(now) || userFirstDuty.isAfter(now)) {  // пользователь еще не дежурил
                                                                             // / первое дежурство наступает сейчас
@@ -108,5 +113,27 @@ public class DutyService {
                 .duration(nextUserDuty.getInterval())
                 .intervalBetweenDuties(nextUserDuty.getInterval().multipliedBy(nextUserDuty.getIds().length))
                 .build();
+    }
+
+    private Long getCurrentlyDutyUserId(Duty duty) {
+        LocalDateTime startTime = duty.getStart_time();
+        Duration interval = duty.getInterval();
+        LocalDateTime now = LocalDateTime.now();
+
+        if (startTime.isAfter(now) || duty.getIds() == null || duty.getIds().length == 0){
+            return null;
+        }
+
+        // duty has already started
+        Duration dutyFullInterval = interval.multipliedBy(duty.getIds().length);
+        Duration diffBetweenDutyStartAndNow = Duration.between(startTime, now);
+
+        // Преобразование интервалов в наносекунды
+        long dutyFullIntervalNanos = dutyFullInterval.toNanos();
+        long diffBetweenDutyStartAndNowNanos = diffBetweenDutyStartAndNow.toNanos();
+        long diffBetweenDutyStartAndNowNanosWithoutCycles = diffBetweenDutyStartAndNowNanos % dutyFullIntervalNanos;
+        long userDutyInterval = dutyFullIntervalNanos / duty.getIds().length;
+
+        return diffBetweenDutyStartAndNowNanosWithoutCycles / userDutyInterval;
     }
 }

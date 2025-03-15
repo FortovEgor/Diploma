@@ -1,6 +1,7 @@
 package fortov.egor.diploma;
 
 import fortov.egor.diploma.dto.CreateDutyRequest;
+import fortov.egor.diploma.dto.DutyDto;
 import fortov.egor.diploma.dto.UpdateDutyRequest;
 import fortov.egor.diploma.dto.UserDutyDto;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class DutyController {
     }
 
     @GetMapping("/{dutyId}")
-    public Duty getDuty(@PathVariable Long dutyId) {
+    public DutyDto getDuty(@PathVariable Long dutyId) {
         return dutyService.getDuty(dutyId);
     }
 

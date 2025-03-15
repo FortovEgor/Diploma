@@ -16,7 +16,7 @@ public class UserFullInfoDto {
 
     private String organization;
 
-    private Integer avatar;
+    private String avatar;
 
     private String about;
 }

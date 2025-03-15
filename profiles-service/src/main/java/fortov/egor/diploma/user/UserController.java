@@ -52,10 +52,10 @@ public class UserController {
         return userService.getNotExistingUserIds(ids);
     }
 
-    @GetMapping("/usersIds")
-    public List<Long> getUserIdsByUsernameAndPassword(@RequestParam String name,
-                                                      @RequestParam String password) {
-        return userService.getUserIdsByUsernameAndPassword(name, password);
+    @GetMapping("/userId")
+    public Long getUserIdByEmailAndPassword(@RequestParam String email,
+                                            @RequestParam String password) {
+        return userService.getUserIdByEmailAndPassword(email, password);
     }
 
     @GetMapping("/info")

@@ -35,9 +35,9 @@ public class NotificationsController {
         return null;
     }
 
-    @DeleteMapping("/array/{notificationIds}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Void deleteNotifications(@PathVariable List<Long> notificationIds) {
+    public Void deleteNotifications(@RequestBody List<Long> notificationIds) {
         service.delete(notificationIds);
         return null;
     }
