@@ -1,0 +1,15 @@
+libs:
+    Common-0.0.1-SNAPSHOT.jar
+
+services:
+    duties-service-0.0.1-SNAPSHOT.jar
+    notifications-service-0.0.1-SNAPSHOT.jar
+    profiles-service-0.0.1-SNAPSHOT.jar
+
+Зависимость сервисов:
+    Profiles-service: requires Common
+    Duties-service: requires Profiles-service
+    Notifications: requires Common
+
+Хранилище дистрибутивов: Nexus
+

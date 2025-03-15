@@ -2,9 +2,9 @@ spring:
   application:
     name: profiles-service
   datasource:
-    url: jdbc:postgresql://localhost:6541/duties_db
-    username: duties_user
-    password: duties_pass
+    url: jdbc:postgresql://localhost:6541/duty_db
+    username: duty_user
+    password: duty_pass
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

@@ -1,4 +1,4 @@
-package fortov.egor.diploma.user.dto;
+package fortov.egor.diploma.user;
 
 import lombok.*;
 

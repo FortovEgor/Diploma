@@ -1,7 +1,6 @@
 package fortov.egor.diploma.sendingServices;
 
-import fortov.egor.diploma.user.User;
-import fortov.egor.diploma.user.dto.UserFullInfoDto;
+import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

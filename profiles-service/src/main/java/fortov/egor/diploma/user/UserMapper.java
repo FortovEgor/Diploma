@@ -3,7 +3,6 @@ package fortov.egor.diploma.user;
 import fortov.egor.diploma.user.dto.NewUserRequest;
 import fortov.egor.diploma.user.dto.UserDto;
 import fortov.egor.diploma.user.dto.UserDtoPartial;
-import fortov.egor.diploma.user.dto.UserFullInfoDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 

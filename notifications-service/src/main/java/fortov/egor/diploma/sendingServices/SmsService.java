@@ -1,6 +1,6 @@
 package fortov.egor.diploma.sendingServices;
 
-import fortov.egor.diploma.user.dto.UserFullInfoDto;
+import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

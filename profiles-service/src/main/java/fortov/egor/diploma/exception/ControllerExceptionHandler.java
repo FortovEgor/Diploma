@@ -12,16 +12,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-//    @ExceptionHandler(ValidationException.class)
-//    public ResponseEntity<?> validationException(ValidationException e) {
-//        Map<String, String> errors = new HashMap<>();
-//        errors.put("Validation error", e.getMessage());
-//
-//        log.error(e.getMessage());
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-//    }
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFoundException(NotFoundException e) {
         Map<String, String> errors = new HashMap<>();

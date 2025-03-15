@@ -1,43 +1,59 @@
 services:
   ########## business services ##########
-  duties:
-    build: duties-service
-    image: duties-service
+  duties-service:
+    build: ./duties-service
     container_name: duties-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://duties-db/duty_db
+      SPRING_DATASOURCE_USERNAME: duty_user
+      SPRING_DATASOURCE_PASSWORD: duty_pass
+    healthcheck:
+      test: curl -f http://duties-service/actuator/health || exit 1
+      timeout: 10s
+      interval: 7s
+      retries: 10
     ports:
       - "7070:7070"
     depends_on:
       - duties-db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6541/duties_db
-      - SPRING_DATASOURCE_USERNAME=duties_user
-      - SPRING_DATASOURCE_PASSWORD=duties_pass
+    restart: on-failure
 
-  notifications:
-    build: notifications
-    image: notifications
-    container_name: notifications
+  notifications-service:
+    build: ./notifications-service
+    container_name: notifications-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://notifications-db/notification_db
+      SPRING_DATASOURCE_USERNAME: notification_user
+      SPRING_DATASOURCE_PASSWORD: notification_pass
+    healthcheck:
+      test: curl -f http://notifications-service/actuator/health || exit 1
+      timeout: 10s
+      interval: 7s
+      retries: 10
     ports:
       - "8080:8080"
     depends_on:
       - notifications-db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6542/notifications_db
-      - SPRING_DATASOURCE_USERNAME=notifications_user
-      - SPRING_DATASOURCE_PASSWORD=notifications_pass
+      - profiles-service
+    restart: on-failure
 
-  profiles:
-    build: profiles
-    image: profiles
-    container_name: profiles
+  profiles-service:
+    build: ./profiles-service
+    container_name: profiles-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://profiles-db/profile_db
+      SPRING_DATASOURCE_USERNAME: profile_user
+      SPRING_DATASOURCE_PASSWORD: profile_pass
+    healthcheck:
+      test: curl -f http://profiles-service/actuator/health || exit 1
+      timeout: 10s
+      interval: 7s
+      retries: 10
     ports:
       - "9090:9090"
     depends_on:
       - profiles-db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:6542/profiles_db
-      - SPRING_DATASOURCE_USERNAME=profiles_user
-      - SPRING_DATASOURCE_PASSWORD=profiles_pass
+    restart: on-failure
 
   ########## DB services ##########
   duties-db:
@@ -46,14 +62,15 @@ services:
     ports:
       - "6541:5432"
     environment:
-      - POSTGRES_PASSWORD=duties_pass
-      - POSTGRES_USER=duties_user
-      - POSTGRES_DB=duties_db
+      - POSTGRES_PASSWORD=duty_pass
+      - POSTGRES_USER=duty_user
+      - POSTGRES_DB=duty_db
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 5s
+      timeout: 10s
+      interval: 7s
       retries: 10
+    restart: on-failure
 
   notifications-db:
     image: postgres:16.1
@@ -61,14 +78,15 @@ services:
     ports:
       - "6542:5432"
     environment:
-      - POSTGRES_PASSWORD=notifications_pass
-      - POSTGRES_USER=notifications_user
-      - POSTGRES_DB=notifications_db
+      - POSTGRES_PASSWORD=notification_pass
+      - POSTGRES_USER=notification_user
+      - POSTGRES_DB=notification_db
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 5s
+      timeout: 10s
+      interval: 7s
       retries: 10
+    restart: on-failure
 
   profiles-db:
     image: postgres:16.1
@@ -76,11 +94,12 @@ services:
     ports:
       - "6543:5432"
     environment:
-      - POSTGRES_PASSWORD=profiles_pass
-      - POSTGRES_USER=profiles_user
-      - POSTGRES_DB=profiles_db
+      - POSTGRES_PASSWORD=profile_pass
+      - POSTGRES_USER=profile_user
+      - POSTGRES_DB=profile_db
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 5s
+      timeout: 10s
+      interval: 7s
       retries: 10
+    restart: on-failure

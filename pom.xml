@@ -24,7 +24,7 @@
 		<module>profiles-service</module>
 		<module>notifications-service</module>
 		<module>duties-service</module>
-        <module>userClient</module>
+        <module>Common</module>
     </modules>
 
 	<build>

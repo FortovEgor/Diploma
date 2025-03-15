@@ -3,7 +3,6 @@ package fortov.egor.diploma.dao;
 import fortov.egor.diploma.Notification;
 import fortov.egor.diploma.storage.NotificationsStorage;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor

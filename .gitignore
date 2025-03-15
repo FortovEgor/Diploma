@@ -7,6 +7,9 @@ target/
 ### Private Keys ###
 application-prod.*
 
+### Jars for distributives ###
+*.jar
+
 ### STS ###
 .apt_generated
 .classpath

@@ -3,7 +3,7 @@ package fortov.egor.diploma.sendingServices;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.type.PhoneNumber;
-import fortov.egor.diploma.user.dto.UserFullInfoDto;
+import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
