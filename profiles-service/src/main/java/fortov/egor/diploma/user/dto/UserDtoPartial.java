@@ -10,5 +10,5 @@ public class UserDtoPartial {
 
     private String name;
 
-    private Integer avatar;
+    private String avatar;
 }
