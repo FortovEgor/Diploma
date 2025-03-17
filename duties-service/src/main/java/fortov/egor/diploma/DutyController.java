@@ -18,6 +18,7 @@ public class DutyController {
     private final DutyService dutyService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Duty createDuty(@Valid @RequestBody CreateDutyRequest request) {
         return dutyService.createDuty(request);
     }
@@ -33,7 +34,7 @@ public class DutyController {
     }
 
     @GetMapping("/user/{userId}")
-    public UserDutyDto getUserDuty(@PathVariable Long userId) {
+    public UserDutyDto getNextUserDuty(@PathVariable Long userId) {
         return dutyService.getNextUserDuty(userId);
     }
 

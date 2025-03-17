@@ -39,7 +39,7 @@ public class NotificationsManager {
 
     private void processNotificationSending(Notification notification) throws InterruptedException {
         boolean firstIter = true;
-        while (!Thread.currentThread().isInterrupted()) {
+        while (true) {
             final Long threadId = Thread.currentThread().threadId();
             log.debug("Thread {} is running...", threadId);
             log.info("Stated processing notification {}", notification);
@@ -83,12 +83,14 @@ public class NotificationsManager {
             notificationIdProcessor.get(notification.getId()).interrupt();
         }
         Thread notificationThread = new Thread(() -> {
-            try {
-                processNotificationSending(notification);
-            } catch (InterruptedException e) {
-                log.debug("Processing of notification with id = " + notification.getId() + " was stopped");
-            } finally {
-                log.debug("Worker thread with id = " + Thread.currentThread().threadId() + " is cleaning up and exiting.");
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    processNotificationSending(notification);
+                } catch (InterruptedException e) {
+                    log.debug("Processing of notification with id = " + notification.getId() + " was stopped");
+                } finally {
+                    log.debug("Worker thread with id = " + Thread.currentThread().threadId() + " is cleaning up and exiting.");
+                }
             }
         });
         notificationIdProcessor.put(notification.getId(), notificationThread);
@@ -100,6 +102,7 @@ public class NotificationsManager {
         if (notificationIdProcessor.containsKey(notificationId)) {
             notificationIdProcessor.get(notificationId).interrupt();
         }
+        notificationIdProcessor.remove(notificationId);
     }
 
     public void deleteNotifications(List<Long> notificationIds) {

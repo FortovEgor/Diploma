@@ -21,10 +21,10 @@
 	</properties>
 
 	<modules>
+		<module>Common</module>
 		<module>profiles-service</module>
-		<module>notifications-service</module>
 		<module>duties-service</module>
-        <module>Common</module>
+		<module>notifications-service</module>
     </modules>
 
 	<build>

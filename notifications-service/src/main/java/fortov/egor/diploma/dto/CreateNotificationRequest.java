@@ -1,11 +1,13 @@
 package fortov.egor.diploma.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Duration;
 
 @Data
+@AllArgsConstructor
 public class CreateNotificationRequest {
 
     @NotNull

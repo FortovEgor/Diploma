@@ -32,10 +32,33 @@ public class NotificationsService {
     @Transactional
     public Notification update(UpdateNotificationRequest request) {
         log.info("updating new notification with data {}", request);
+        Long notificationId = request.getId();
+        Notification notification = repo.findById(notificationId);
+        if (notification == null) {
+            throw new NotFoundException("Уведомление с id = " + notificationId + " не найдено");
+        }
+        if (request.getType() == null) {
+            request.setType(notification.getType());
+        }
+        if (request.getContent() == null) {
+            request.setContent(notification.getContent());
+        }
+        if (request.getTime_to_show() == null) {
+            request.setTime_to_show(notification.getTime_to_show());
+        }
+        if (request.getInterval_to_repeat() == null) {
+            request.setInterval_to_repeat(notification.getInterval_to_repeat());
+        }
+        if (request.getUserId() == null) {
+            request.setUserId(notification.getUserId());
+        }
+        if (request.getImmediately() == null) {
+            request.setImmediately(notification.getImmediately());
+        }
         Notification notificationFromRequest = mapper.toNotification(request);
-        Notification notification = repo.save(notificationFromRequest);
-        manager.updateNotification(notification);
-        return notification;
+        Notification notificationResult = repo.save(notificationFromRequest);
+        manager.updateNotification(notificationResult);
+        return notificationResult;
     }
 
     @Transactional
@@ -66,6 +89,10 @@ public class NotificationsService {
 
     public List<Notification> get(List<Long> notificationIds) {
         log.info("getting notifications with ids = {}", notificationIds);
-        return repo.findAllById(notificationIds);
+        List<Notification> notifications = repo.findAllById(notificationIds);
+        if (notifications == null) {
+            throw new NotFoundException("Failed to find any notifications with id from " + notificationIds);
+        }
+        return notifications;
     }
 }
