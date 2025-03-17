@@ -18,6 +18,7 @@ public class DutyController {
     private final DutyService dutyService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Duty createDuty(@Valid @RequestBody CreateDutyRequest request) {
         return dutyService.createDuty(request);
     }
