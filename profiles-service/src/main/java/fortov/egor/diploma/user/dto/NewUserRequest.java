@@ -5,10 +5,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 // input validation takes place in dto
 @Data
+@AllArgsConstructor
 public class NewUserRequest {
     @NotBlank
     @Size(min = 2, max = 250, message = "Имя пользователя должно содержать от 2-х до 250-ти символов")

@@ -50,13 +50,33 @@ public class DutyService {
     @Transactional
     public Duty updateDuty(UpdateDutyRequest request) {
         log.info("updating duty: {}", request);
-        Duty duty = mapper.toDuty(request);
-        return dutyStorage.update(duty);
+        Long dutyId = request.getId();
+        Duty duty = dutyStorage.getDutyById(dutyId);
+        if (duty == null) {
+            throw new NotFoundException("Failed to find duty with id = " + dutyId);
+        }
+
+        if (request.getStart_time() == null) {
+            request.setStart_time(duty.getStart_time());
+        }
+        if (request.getInterval() == null) {
+            request.setInterval(duty.getInterval());
+        }
+        if (request.getIds() == null) {
+            request.setIds(duty.getIds());
+        }
+
+        Duty dutyResult = mapper.toDuty(request);
+        return dutyStorage.update(dutyResult);
     }
 
     @Transactional
     public void deleteDuty(Long dutyId) {
         log.info("deleting duty with id = {}", dutyId);
+        Duty duty = dutyStorage.getDutyById(dutyId);
+        if (duty == null) {
+            throw new NotFoundException("Failed to find duty with id = " + dutyId);
+        }
         dutyStorage.delete(dutyId);
     }
 

@@ -85,6 +85,9 @@ public class UserService {
     public List<Long> getNotExistingUserIds(List<Long> ids) {
         log.info("getting not existing user ids from ids = {}", ids);
         List<Long> existingIds = repo.findExistingUserIds(ids);
+        if (existingIds == null) {
+            throw new NotFoundException("Failed to find any users with id from " + ids);
+        }
         return ids.stream()
                 .filter((id) -> !existingIds.contains(id))
                 .toList();

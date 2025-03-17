@@ -33,7 +33,7 @@ public class DutyController {
     }
 
     @GetMapping("/user/{userId}")
-    public UserDutyDto getUserDuty(@PathVariable Long userId) {
+    public UserDutyDto getNextUserDuty(@PathVariable Long userId) {
         return dutyService.getNextUserDuty(userId);
     }
 
