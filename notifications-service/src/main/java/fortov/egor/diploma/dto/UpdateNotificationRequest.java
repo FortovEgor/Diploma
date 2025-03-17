@@ -1,11 +1,13 @@
 package fortov.egor.diploma.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class UpdateNotificationRequest {
     private Long id;
 
