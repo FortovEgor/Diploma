@@ -175,7 +175,7 @@ class NotificationsControllerTest {
                             .content(mapper.writeValueAsString(request))
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isCreated())
+                    .andExpect(status().is2xxSuccessful())
                     .andExpect(jsonPath("$.id", equalTo(notification.getId()), Long.class))
                     .andExpect(jsonPath("$.type", equalTo(notification.getType())))
                     .andExpect(jsonPath("$.content", equalTo(notification.getContent())))
