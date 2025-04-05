@@ -7,6 +7,19 @@ servers:
   description: Generated server url
 paths:
   /duties:
+    get:
+      tags:
+      - duty-controller
+      operationId: getDuties
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DutyDto"
     put:
       tags:
       - duty-controller
@@ -35,8 +48,8 @@ paths:
               $ref: "#/components/schemas/CreateDutyRequest"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           content:
             '*/*':
               schema:
@@ -59,26 +72,12 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Duty"
-    delete:
-      tags:
-      - duty-controller
-      operationId: deleteDuty
-      parameters:
-      - name: dutyId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "204":
-          description: No Content
+                $ref: "#/components/schemas/DutyDto"
   /duties/user/{userId}:
     get:
       tags:
       - duty-controller
-      operationId: getUserDuty
+      operationId: getNextUserDuty
       parameters:
       - name: userId
         in: path
@@ -103,6 +102,8 @@ components:
         id:
           type: integer
           format: int64
+        name:
+          type: string
         start_time:
           type: string
           format: date-time
@@ -143,6 +144,8 @@ components:
         id:
           type: integer
           format: int64
+        name:
+          type: string
         start_time:
           type: string
           format: date-time
@@ -181,12 +184,15 @@ components:
       required:
       - ids
       - interval
+      - name
       - start_time
       type: object
       properties:
         start_time:
           type: string
           format: date-time
+        name:
+          type: string
         interval:
           type: object
           properties:
@@ -233,6 +239,49 @@ components:
           items:
             type: integer
             format: int64
+    DutyDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        start_time:
+          type: string
+          format: date-time
+        interval:
+          type: object
+          properties:
+            seconds:
+              type: integer
+              format: int64
+            zero:
+              type: boolean
+            nano:
+              type: integer
+              format: int32
+            negative:
+              type: boolean
+            positive:
+              type: boolean
+            units:
+              type: array
+              items:
+                type: object
+                properties:
+                  durationEstimated:
+                    type: boolean
+                  timeBased:
+                    type: boolean
+                  dateBased:
+                    type: boolean
+        ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+        currentDutyUserId:
+          type: integer
+          format: int64
     UserDutyDto:
       type: object
       properties:

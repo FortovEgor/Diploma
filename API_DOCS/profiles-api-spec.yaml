@@ -81,13 +81,13 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserFullInfoDto"
-  /users/usersIds:
+  /users/userId:
     get:
       tags:
       - user-controller
-      operationId: getUserIdsByUsernameAndPassword
+      operationId: getUserIdByEmailAndPassword
       parameters:
-      - name: name
+      - name: email
         in: query
         required: true
         schema:
@@ -103,10 +103,8 @@ paths:
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  type: integer
-                  format: int64
+                type: integer
+                format: int64
   /users/notexisting:
     get:
       tags:
@@ -173,8 +171,7 @@ components:
         organization:
           type: string
         avatar:
-          type: integer
-          format: int32
+          type: string
         about:
           type: string
     NewUserRequest:
@@ -226,8 +223,7 @@ components:
         organization:
           type: string
         avatar:
-          type: integer
-          format: int32
+          type: string
         about:
           type: string
     UserDtoPartial:
@@ -239,5 +235,4 @@ components:
         name:
           type: string
         avatar:
-          type: integer
-          format: int32
+          type: string

@@ -41,6 +41,22 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Notification"
+    delete:
+      tags:
+      - notifications-controller
+      operationId: deleteNotifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "204":
+          description: No Content
   /notifications/{notificationIds}:
     get:
       tags:
@@ -79,23 +95,6 @@ paths:
       responses:
         "204":
           description: No Content
-  /notifications/array/{notificationIds}:
-    delete:
-      tags:
-      - notifications-controller
-      operationId: deleteNotifications
-      parameters:
-      - name: notificationIds
-        in: path
-        required: true
-        schema:
-          type: array
-          items:
-            type: integer
-            format: int64
-      responses:
-        "204":
-          description: No Content
 components:
   schemas:
     UpdateNotificationRequest:
@@ -110,6 +109,7 @@ components:
           type: string
         time_to_show:
           type: string
+          format: date-time
         interval_to_repeat:
           type: object
           properties:
