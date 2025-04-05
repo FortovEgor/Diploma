@@ -22,15 +22,16 @@ public class DutyStorageDb implements DutyStorage {
 
     @Override
     public Duty save(Duty duty) {
-        String sql = "INSERT INTO duties (start_time, interval, ids) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO duties (name, start_time, interval, ids) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-                    ps.setObject(1, duty.getStart_time());
-                    ps.setLong(2, duty.getInterval().toSeconds());
+                    ps.setString(1, duty.getName());
+                    ps.setObject(2, duty.getStart_time());
+                    ps.setLong(3, duty.getInterval().toSeconds());
                     Array idsArray = connection.createArrayOf("bigint", duty.getIds());
-                    ps.setArray(3, idsArray);
+                    ps.setArray(4, idsArray);
                     return ps;
                 }, keyHolder);
         duty.setId(keyHolder.getKey().longValue());

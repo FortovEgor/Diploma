@@ -45,10 +45,11 @@ public class DutyController {
         return dutyService.getNextUserDuty(userId);
     }
 
-    @DeleteMapping("/{dutyId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Void deleteDuty(@PathVariable Long dutyId) {
-        dutyService.deleteDuty(dutyId);
-        return null;
-    }
+    // For future releases ONLY:
+//    @DeleteMapping("/{dutyId}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public Void deleteDuty(@PathVariable Long dutyId) {
+//        dutyService.deleteDuty(dutyId);
+//        return null;
+//    }
 }

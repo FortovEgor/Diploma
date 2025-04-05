@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -51,6 +52,7 @@ class DutyControllerTest {
     void setup() {
         Long[] ids = {1L, 2L, 3L};
         duty = new Duty(1L,
+                "duty name",
                 LocalDateTime.now(),
                 Duration.ofMinutes(5),
                 ids);
@@ -62,6 +64,7 @@ class DutyControllerTest {
         void createDutySuccessful() throws Exception {
             CreateDutyRequest request = new CreateDutyRequest(
                     duty.getStart_time(),
+                    duty.getName(),
                     duty.getInterval(),
                     duty.getIds()
             );
@@ -76,7 +79,8 @@ class DutyControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id", equalTo(duty.getId()), Long.class))
-                    .andExpect(jsonPath("$.start_time", equalTo(duty.getStart_time().toString())))
+                    .andExpect(jsonPath("$.start_time",
+                            equalTo(duty.getStart_time().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$.interval", equalTo(duty.getInterval().toString())))
                     .andExpect(jsonPath("$.ids", containsInAnyOrder(1, 2, 3)));
         }
@@ -88,6 +92,7 @@ class DutyControllerTest {
         void updateDuty() throws Exception {
             UpdateDutyRequest request = new UpdateDutyRequest(
                     1L,
+                    "New name",
                     duty.getStart_time(),
                     duty.getInterval(),
                     duty.getIds()
@@ -103,7 +108,8 @@ class DutyControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id", equalTo(duty.getId()), Long.class))
-                    .andExpect(jsonPath("$.start_time", equalTo(duty.getStart_time().toString())))
+                    .andExpect(jsonPath("$.start_time",
+                            equalTo(duty.getStart_time().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$.interval", equalTo(duty.getInterval().toString())))
                     .andExpect(jsonPath("$.ids", containsInAnyOrder(1, 2, 3)));
         }
@@ -128,7 +134,8 @@ class DutyControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(jsonPath("$.id", equalTo(duty.getId()), Long.class))
-                    .andExpect(jsonPath("$.start_time", equalTo(duty.getStart_time().toString())))
+                    .andExpect(jsonPath("$.start_time",
+                            equalTo(duty.getStart_time().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$.interval", equalTo(duty.getInterval().toString())));
         }
 
@@ -149,7 +156,8 @@ class DutyControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(jsonPath("$[0].id", equalTo(duty.getId()), Long.class))
-                    .andExpect(jsonPath("$[0].start_time", equalTo(duty.getStart_time().toString())))
+                    .andExpect(jsonPath("$[0].start_time",
+                            equalTo(duty.getStart_time().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$[0].interval", equalTo(duty.getInterval().toString())));
         }
 
@@ -168,10 +176,6 @@ class DutyControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful());
-//                    .andExpect(jsonPath("$.id", equalTo(duty.getId()), Long.class))
-//                    .andExpect(jsonPath("$.start_time", equalTo(duty.getStart_time().toString())))
-//                    .andExpect(jsonPath("$.interval", equalTo(duty.getInterval().toString())));
-            // @TODO: check fields of UserDutyDto
         }
     }
 

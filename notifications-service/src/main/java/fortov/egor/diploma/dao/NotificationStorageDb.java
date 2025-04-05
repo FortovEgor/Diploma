@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -45,8 +46,14 @@ public class NotificationStorageDb implements NotificationsStorage {
 
     @Override
     public void deleteAllById(List<Long> notificationsIds) {
-        String sql = "DELETE FROM notifications WHERE id IN ?";
-        jdbcTemplate.update(sql, notificationsIds);
+        if (notificationsIds == null || notificationsIds.isEmpty()) {
+            return;
+        }
+
+        String sql = "DELETE FROM notifications WHERE id IN (" +
+                String.join(",", Collections.nCopies(notificationsIds.size(), "?")) + ")";
+
+        jdbcTemplate.update(sql, notificationsIds.toArray());
     }
 
     @Override
