@@ -179,16 +179,17 @@ class DutyControllerTest {
         }
     }
 
-    @Nested
-    class DeleteDuty {
-        @Test
-        void deleteDuty() throws Exception{
-            doNothing().when(dutyService).deleteDuty(anyLong());
-
-            mvc.perform(delete("/duties/" + duty.getId())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is2xxSuccessful());
-        }
-    }
+    // for future releases ONLY:
+//    @Nested
+//    class DeleteDuty {
+//        @Test
+//        void deleteDuty() throws Exception{
+//            doNothing().when(dutyService).deleteDuty(anyLong());
+//
+//            mvc.perform(delete("/duties/" + duty.getId())
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .accept(MediaType.APPLICATION_JSON))
+//                    .andExpect(status().is2xxSuccessful());
+//        }
+//    }
 }

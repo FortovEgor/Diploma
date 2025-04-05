@@ -41,8 +41,8 @@ public class DutyStorageDb implements DutyStorage {
     @Override
     public Duty update(Duty duty) {
         Long id = duty.getId();
-        String sql = "UPDATE duties SET start_time = ?, interval = ?, ids = ? WHERE id = ?";
-        jdbcTemplate.update(sql, duty.getStart_time(), duty.getInterval().toSeconds(), duty.getIds(), id);
+        String sql = "UPDATE duties SET name = ?, start_time = ?, interval = ?, ids = ? WHERE id = ?";
+        jdbcTemplate.update(sql, duty.getName(), duty.getStart_time(), duty.getInterval().toSeconds(), duty.getIds(), id);
         return duty;
     }
 
@@ -54,14 +54,15 @@ public class DutyStorageDb implements DutyStorage {
 
     @Override
     public List<Duty> getUserDuties(Long userId) {
-        String sql = "SELECT id, start_time, interval, ids FROM duties WHERE ? = ANY(ids)";
+        String sql = "SELECT id, name, start_time, interval, ids FROM duties WHERE ? = ANY(ids)";
         return jdbcTemplate.query(sql,
                 (ResultSet rs, int rowNum) -> {
                     Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
                     return Duty.builder()
                             .id(rs.getLong(1))
-                            .start_time(rs.getTimestamp(2).toLocalDateTime())
-                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .name(rs.getString(2))
+                            .start_time(rs.getTimestamp(3).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(4)))
                             .ids(ids)
                             .build();
                 }, userId);
@@ -69,14 +70,15 @@ public class DutyStorageDb implements DutyStorage {
 
     @Override
     public List<Duty> getAllDuties() {
-        String sql = "SELECT id, start_time, interval, ids FROM duties";
+        String sql = "SELECT id, name, start_time, interval, ids FROM duties";
         return jdbcTemplate.query(sql,
                 (ResultSet rs, int rowNum) -> {
                     Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
                     return Duty.builder()
                             .id(rs.getLong(1))
-                            .start_time(rs.getTimestamp(2).toLocalDateTime())
-                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .name(rs.getString(2))
+                            .start_time(rs.getTimestamp(3).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(4)))
                             .ids(ids)
                             .build();
                 });
@@ -90,8 +92,9 @@ public class DutyStorageDb implements DutyStorage {
                     Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
                     return Duty.builder()
                             .id(rs.getLong(1))
-                            .start_time(rs.getTimestamp(2).toLocalDateTime())
-                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .name(rs.getString(2))
+                            .start_time(rs.getTimestamp(3).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(4)))
                             .ids(ids)
                             .build();
                 }, dutiesIds);
@@ -105,8 +108,9 @@ public class DutyStorageDb implements DutyStorage {
                     Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
                     return Duty.builder()
                             .id(rs.getLong(1))
-                            .start_time(rs.getTimestamp(2).toLocalDateTime())
-                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .name(rs.getString(2))
+                            .start_time(rs.getTimestamp(3).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(4)))
                             .ids(ids)
                             .build();
                 }, dutyId);
