@@ -1,5 +1,5 @@
 # script builds jars from source & deploys them into virtual containers
-mvn clean intall
+mvn clean install
 docker compose up --build
 
 
