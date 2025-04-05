@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -94,7 +95,7 @@ class NotificationsControllerTest {
                     false);
 
             Mockito
-                    .when(notificationsService.create(request))
+                    .when(notificationsService.create(any()))
                     .thenReturn(notification);
 
             mvc.perform(post("/notifications")
@@ -105,7 +106,8 @@ class NotificationsControllerTest {
                     .andExpect(jsonPath("$.id", equalTo(notification.getId()), Long.class))
                     .andExpect(jsonPath("$.type", equalTo(notification.getType())))
                     .andExpect(jsonPath("$.content", equalTo(notification.getContent())))
-                    .andExpect(jsonPath("$.time_to_show", equalTo(notification.getTime_to_show().toString())))
+                    .andExpect(jsonPath("$.time_to_show",
+                            equalTo(notification.getTime_to_show().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$.interval_to_repeat", equalTo(notification.getInterval_to_repeat().toString())))
                     .andExpect(jsonPath("$.userId", equalTo(notification.getUserId()), Long.class))
                     .andExpect(jsonPath("$.immediately", equalTo(notification.getImmediately())));
@@ -168,7 +170,7 @@ class NotificationsControllerTest {
                     false);
 
             Mockito
-                    .when(notificationsService.update(request))
+                    .when(notificationsService.update(any()))
                     .thenReturn(notification);
 
             mvc.perform(put("/notifications")
@@ -179,7 +181,8 @@ class NotificationsControllerTest {
                     .andExpect(jsonPath("$.id", equalTo(notification.getId()), Long.class))
                     .andExpect(jsonPath("$.type", equalTo(notification.getType())))
                     .andExpect(jsonPath("$.content", equalTo(notification.getContent())))
-                    .andExpect(jsonPath("$.time_to_show", equalTo(notification.getTime_to_show().toString())))
+                    .andExpect(jsonPath("$.time_to_show",
+                            equalTo(notification.getTime_to_show().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$.interval_to_repeat", equalTo(notification.getInterval_to_repeat().toString())))
                     .andExpect(jsonPath("$.userId", equalTo(notification.getUserId()), Long.class))
                     .andExpect(jsonPath("$.immediately", equalTo(notification.getImmediately())));
@@ -227,7 +230,8 @@ class NotificationsControllerTest {
                     .andExpect(jsonPath("$[0].id", equalTo(notification.getId()), Long.class))
                     .andExpect(jsonPath("$[0].type", equalTo(notification.getType())))
                     .andExpect(jsonPath("$[0].content", equalTo(notification.getContent())))
-                    .andExpect(jsonPath("$[0].time_to_show", equalTo(notification.getTime_to_show().toString())))
+                    .andExpect(jsonPath("$[0].time_to_show",
+                            equalTo(notification.getTime_to_show().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))))
                     .andExpect(jsonPath("$[0].interval_to_repeat", equalTo(notification.getInterval_to_repeat().toString())))
                     .andExpect(jsonPath("$[0].userId", equalTo(notification.getUserId()), Long.class))
                     .andExpect(jsonPath("$[0].immediately", equalTo(notification.getImmediately())));

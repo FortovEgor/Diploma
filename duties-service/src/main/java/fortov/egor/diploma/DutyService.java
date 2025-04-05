@@ -40,6 +40,20 @@ public class DutyService {
                 .build();
     }
 
+    public List<DutyDto> getAllDuties() {
+        log.info("getting all duties...");
+        List<Duty> duties = dutyStorage.getAllDuties();
+        return duties.stream()
+                .map(duty -> DutyDto.builder()
+                        .id(duty.getId())
+                        .start_time(duty.getStart_time())
+                        .interval(duty.getInterval())
+                        .ids(duty.getIds())
+                        .currentDutyUserId(getCurrentlyDutyUserId(duty))
+                        .build())
+                .toList(); // Собираем результат в массив DutyDto
+    }
+
     @Transactional
     public Duty createDuty(CreateDutyRequest request) {
         log.info("creating new duty: {}", request);
@@ -56,6 +70,9 @@ public class DutyService {
             throw new NotFoundException("Failed to find duty with id = " + dutyId);
         }
 
+        if (request.getName() == null || request.getName().isEmpty()) {
+            request.setName(duty.getName());
+        }
         if (request.getStart_time() == null) {
             request.setStart_time(duty.getStart_time());
         }

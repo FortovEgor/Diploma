@@ -22,15 +22,16 @@ public class DutyStorageDb implements DutyStorage {
 
     @Override
     public Duty save(Duty duty) {
-        String sql = "INSERT INTO duties (start_time, interval, ids) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO duties (name, start_time, interval, ids) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-                    ps.setObject(1, duty.getStart_time());
-                    ps.setLong(2, duty.getInterval().toSeconds());
+                    ps.setString(1, duty.getName());
+                    ps.setObject(2, duty.getStart_time());
+                    ps.setLong(3, duty.getInterval().toSeconds());
                     Array idsArray = connection.createArrayOf("bigint", duty.getIds());
-                    ps.setArray(3, idsArray);
+                    ps.setArray(4, idsArray);
                     return ps;
                 }, keyHolder);
         duty.setId(keyHolder.getKey().longValue());
@@ -64,6 +65,21 @@ public class DutyStorageDb implements DutyStorage {
                             .ids(ids)
                             .build();
                 }, userId);
+    }
+
+    @Override
+    public List<Duty> getAllDuties() {
+        String sql = "SELECT id, start_time, interval, ids FROM duties";
+        return jdbcTemplate.query(sql,
+                (ResultSet rs, int rowNum) -> {
+                    Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
+                    return Duty.builder()
+                            .id(rs.getLong(1))
+                            .start_time(rs.getTimestamp(2).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .ids(ids)
+                            .build();
+                });
     }
 
     @Override

@@ -14,6 +14,8 @@ public class UpdateDutyRequest {
     @NotNull
     Long id;
 
+    String name;
+
     LocalDateTime start_time;
 
     Duration interval;

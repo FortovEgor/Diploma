@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @RestController
 @RequestMapping("/duties")
@@ -33,15 +35,21 @@ public class DutyController {
         return dutyService.getDuty(dutyId);
     }
 
+    @GetMapping
+    public List<DutyDto> getDuties() {
+        return dutyService.getAllDuties();
+    }
+
     @GetMapping("/user/{userId}")
     public UserDutyDto getNextUserDuty(@PathVariable Long userId) {
         return dutyService.getNextUserDuty(userId);
     }
 
-    @DeleteMapping("/{dutyId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Void deleteDuty(@PathVariable Long dutyId) {
-        dutyService.deleteDuty(dutyId);
-        return null;
-    }
+    // For future releases ONLY:
+//    @DeleteMapping("/{dutyId}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public Void deleteDuty(@PathVariable Long dutyId) {
+//        dutyService.deleteDuty(dutyId);
+//        return null;
+//    }
 }
