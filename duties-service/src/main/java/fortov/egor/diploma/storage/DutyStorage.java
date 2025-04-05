@@ -16,4 +16,6 @@ public interface DutyStorage {
     List<Duty> getDutiesByIds(List<Long> dutiesIds);
 
     Duty getDutyById(Long dutyId);
+
+    List<Duty> getAllDuties();
 }

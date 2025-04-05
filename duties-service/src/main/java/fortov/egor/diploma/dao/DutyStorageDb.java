@@ -67,6 +67,21 @@ public class DutyStorageDb implements DutyStorage {
     }
 
     @Override
+    public List<Duty> getAllDuties() {
+        String sql = "SELECT id, start_time, interval, ids FROM duties";
+        return jdbcTemplate.query(sql,
+                (ResultSet rs, int rowNum) -> {
+                    Long[] ids = (Long[]) ((PgArray) rs.getArray("ids")).getArray();
+                    return Duty.builder()
+                            .id(rs.getLong(1))
+                            .start_time(rs.getTimestamp(2).toLocalDateTime())
+                            .interval(Duration.ofSeconds(rs.getLong(3)))
+                            .ids(ids)
+                            .build();
+                });
+    }
+
+    @Override
     public List<Duty> getDutiesByIds(List<Long> dutiesIds) {
         String sql = "SELECT * FROM duties WHERE id IN ?";
         return jdbcTemplate.query(sql,

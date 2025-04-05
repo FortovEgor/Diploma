@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @RestController
 @RequestMapping("/duties")
@@ -31,6 +33,11 @@ public class DutyController {
     @GetMapping("/{dutyId}")
     public DutyDto getDuty(@PathVariable Long dutyId) {
         return dutyService.getDuty(dutyId);
+    }
+
+    @GetMapping
+    public List<DutyDto> getDuties() {
+        return dutyService.getAllDuties();
     }
 
     @GetMapping("/user/{userId}")

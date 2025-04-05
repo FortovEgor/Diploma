@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -129,6 +130,27 @@ class DutyControllerTest {
                     .andExpect(jsonPath("$.id", equalTo(duty.getId()), Long.class))
                     .andExpect(jsonPath("$.start_time", equalTo(duty.getStart_time().toString())))
                     .andExpect(jsonPath("$.interval", equalTo(duty.getInterval().toString())));
+        }
+
+        @Test
+        void getAllDutiesSuccessful() throws Exception {
+            Mockito
+                    .when(dutyService.getAllDuties())
+                    .thenReturn(Arrays.asList(DutyDto.builder()
+                            .id(duty.getId())
+                            .start_time(duty.getStart_time())
+                            .interval(duty.getInterval())
+                            .ids(duty.getIds())
+                            .currentDutyUserId(1L)
+                            .build()));
+
+            mvc.perform(get("/duties")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(jsonPath("$[0].id", equalTo(duty.getId()), Long.class))
+                    .andExpect(jsonPath("$[0].start_time", equalTo(duty.getStart_time().toString())))
+                    .andExpect(jsonPath("$[0].interval", equalTo(duty.getInterval().toString())));
         }
 
         @Test
