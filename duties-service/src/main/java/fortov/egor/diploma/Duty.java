@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 public class Duty {
     private Long id;
 
+    private String name;
+
     private LocalDateTime start_time;
 
     private Duration interval;

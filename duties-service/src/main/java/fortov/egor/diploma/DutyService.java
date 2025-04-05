@@ -70,6 +70,9 @@ public class DutyService {
             throw new NotFoundException("Failed to find duty with id = " + dutyId);
         }
 
+        if (request.getName() == null || request.getName().isEmpty()) {
+            request.setName(duty.getName());
+        }
         if (request.getStart_time() == null) {
             request.setStart_time(duty.getStart_time());
         }
