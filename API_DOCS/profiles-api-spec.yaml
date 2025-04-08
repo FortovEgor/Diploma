@@ -62,25 +62,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserDto"
-  /users/{id}:
-    get:
-      tags:
-      - user-controller
-      operationId: getUserById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/UserFullInfoDto"
   /users/userId:
     get:
       tags:
@@ -152,6 +133,39 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserDtoPartial"
+  /users/info/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullInfoDto"
+  /users/all:
+    get:
+      tags:
+      - user-controller
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserFullInfoDto"
 components:
   schemas:
     User:
@@ -208,6 +222,16 @@ components:
           type: string
         phone:
           type: string
+    UserDtoPartial:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        avatar:
+          type: string
     UserFullInfoDto:
       type: object
       properties:
@@ -225,14 +249,4 @@ components:
         avatar:
           type: string
         about:
-          type: string
-    UserDtoPartial:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        avatar:
           type: string

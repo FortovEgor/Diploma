@@ -110,4 +110,13 @@ public class UserService {
         }
         return users;
     }
+
+    public List<User> getAllUsers() {
+        log.info("getting all users...");
+        List<User> users = repo.getAllUsers();
+        if (users == null) {
+            throw new NotFoundException("Failed to find any users");
+        }
+        return users;
+    }
 }
