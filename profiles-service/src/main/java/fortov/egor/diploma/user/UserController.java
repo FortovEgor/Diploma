@@ -33,7 +33,7 @@ public class UserController {
         return res;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/info/{id}")
     public UserFullInfoDto getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return userMapper.toFullInfo(user);
@@ -62,5 +62,10 @@ public class UserController {
     @GetMapping("/info")
     public List<UserDtoPartial> getUsersByIds(@RequestParam List<Long> ids) {
         return userMapper.toPartial(userService.getUsersById(ids));
+    }
+
+    @GetMapping("/all")
+    public List<UserFullInfoDto> getAllUsers() {
+        return userMapper.toFullInfo(userService.getAllUsers());
     }
 }

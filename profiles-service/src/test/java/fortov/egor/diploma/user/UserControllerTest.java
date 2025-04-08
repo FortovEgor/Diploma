@@ -149,7 +149,7 @@ class UserControllerTest {
                     .when(userService.getUserById(user.getId()))
                     .thenReturn(user);
 
-            mvc.perform(get("/users/1")
+            mvc.perform(get("/users/info/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
