@@ -2,9 +2,11 @@ package fortov.egor.diploma.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 @Data
 @Entity
+@DynamicInsert // ignore null fields
 @Builder
 @ToString
 @Table(name = "users")
