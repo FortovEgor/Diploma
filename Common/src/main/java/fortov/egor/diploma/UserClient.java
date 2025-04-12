@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 public class UserClient {
@@ -26,8 +27,8 @@ public class UserClient {
     public UserClient(String baseUrl) {
         rest = new RestTemplateBuilder()
                 .rootUri(baseUrl)
-                .setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
-                .setReadTimeout(DEFAULT_READ_TIMEOUT)
+//                .setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
+//                .setReadTimeout(DEFAULT_READ_TIMEOUT)
                 .build();
     }
 
@@ -46,6 +47,27 @@ public class UserClient {
             return response;
         } catch (Exception e) {
             log.error("error happened while getting user with id = " + userId + "; " + e.getMessage());
+            return null;
+        }
+    }
+
+    public ResponseEntity<List<Long>> getNotExistingUsersIds(Long[] ids) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < ids.length; i++) {
+            result.append(ids[i]); // Добавляем элемент
+            if (i < ids.length - 1) {
+                result.append(","); // Добавляем запятую, если это не последний элемент
+            }
+        }
+        String idsString = result.toString();
+
+        try {
+            ResponseEntity<List<Long>> response = rest
+                    .exchange("/users/notexisting?ids=" + idsString, HttpMethod.GET, null, new ParameterizedTypeReference<List<Long>>() {});
+            return response;
+        } catch (Exception e) {
+            log.error("error happened while getting user with ids = " + ids + "; " + e.getMessage());
             return null;
         }
     }
