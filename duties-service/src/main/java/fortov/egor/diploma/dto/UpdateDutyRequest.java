@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class UpdateDutyRequest {
-    @NotNull
+    @NotNull(message = "id не может отсутствовать")
     Long id;
 
     String name;

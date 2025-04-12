@@ -8,12 +8,16 @@ import fortov.egor.diploma.storage.DutyStorage;
 import fortov.egor.diploma.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -23,6 +27,15 @@ import java.util.List;
 public class DutyService {
     private final DutyStorage dutyStorage;
     private final DutyMapper mapper;
+    private final UserClient userClient;
+
+    @Autowired
+    DutyService(DutyStorage dutyStorage, DutyMapper mapper,
+                @Value("${users.url}") String usersServiceUrl) {
+        this.dutyStorage = dutyStorage;
+        this.mapper = mapper;
+        this.userClient = new UserClient(usersServiceUrl);
+    }
 
     public DutyDto getDuty(Long dutyId) {
         log.info("getting duty with id = {}", dutyId);
@@ -57,6 +70,12 @@ public class DutyService {
     @Transactional
     public Duty createDuty(CreateDutyRequest request) {
         log.info("creating new duty: {}", request);
+
+        List<Long> notExistingIds = getNotExistingIds(request.getIds());
+        if (!notExistingIds.isEmpty()) {
+            throw new NotFoundException("Failed to find users with ids: " + notExistingIds);
+        }
+
         Duty duty = mapper.toDuty(request);
         return dutyStorage.save(duty);
     }
@@ -64,6 +83,14 @@ public class DutyService {
     @Transactional
     public Duty updateDuty(UpdateDutyRequest request) {
         log.info("updating duty: {}", request);
+
+        if (request.getIds() != null && request.getIds().length != 0) {
+            List<Long> notExistingIds = getNotExistingIds(request.getIds());
+            if (!notExistingIds.isEmpty()) {
+                throw new NotFoundException("Failed to find users with ids: " + notExistingIds);
+            }
+        }
+
         Long dutyId = request.getId();
         Duty duty = dutyStorage.getDutyById(dutyId);
         if (duty == null) {
@@ -172,5 +199,13 @@ public class DutyService {
         long userDutyInterval = dutyFullIntervalNanos / duty.getIds().length;
 
         return diffBetweenDutyStartAndNowNanosWithoutCycles / userDutyInterval;
+    }
+
+    private List<Long> getNotExistingIds(Long[] possibleIds) {
+        ResponseEntity<List<Long>> response = userClient.getNotExistingUsersIds(possibleIds);
+        if ((response == null) || !response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Interval error while requesting not existing users");
+        }
+        return response.getBody();
     }
 }

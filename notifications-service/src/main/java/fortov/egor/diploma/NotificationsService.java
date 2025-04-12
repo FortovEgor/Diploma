@@ -4,8 +4,12 @@ import fortov.egor.diploma.dto.CreateNotificationRequest;
 import fortov.egor.diploma.dto.UpdateNotificationRequest;
 import fortov.egor.diploma.exception.NotFoundException;
 import fortov.egor.diploma.storage.NotificationsStorage;
+import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +27,13 @@ public class NotificationsService {
     @Transactional
     public Notification create(CreateNotificationRequest request) {
         log.info("creating new notification with data {}", request);
+
+        final long userId = request.getUserId();
+        if (!userExists(userId)) {
+            throw new NotFoundException("Нельзя назначить уведомление несуществующему пользователю (id = " +
+                    userId + ")");
+        }
+
         Notification notificationFromRequest = mapper.toNotification(request);
         Notification notification = repo.save(notificationFromRequest);
         manager.registerNotification(notification);
@@ -37,6 +48,13 @@ public class NotificationsService {
         if (notification == null) {
             throw new NotFoundException("Уведомление с id = " + notificationId + " не найдено");
         }
+
+        final long userId = request.getUserId();
+        if (!userExists(userId)) {
+            throw new NotFoundException("Нельзя назначить уведомление несуществующему пользователю (id = " +
+                    userId + ")");
+        }
+
         if (request.getType() == null) {
             request.setType(notification.getType());
         }
@@ -94,5 +112,10 @@ public class NotificationsService {
             throw new NotFoundException("Failed to find any notifications with id from " + notificationIds);
         }
         return notifications;
+    }
+
+    private boolean userExists(long userId) {
+        ResponseEntity<UserFullInfoDto> response = manager.userClient.getUser(userId);
+        return (response != null) && response.getStatusCode().is2xxSuccessful();
     }
 }

@@ -35,7 +35,7 @@ server:
     include-stacktrace: always
 
 users:
-  url: http://localhost:9090
+  url: http://profiles-service:9090
 
 # NOTE: first register account to use the functional
 twilio:  # todo: place actual data here

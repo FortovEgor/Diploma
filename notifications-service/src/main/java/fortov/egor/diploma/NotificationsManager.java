@@ -5,6 +5,7 @@ import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -52,7 +53,7 @@ public class NotificationsManager {
 
             final Long receiverId = notification.getUserId();
             UserFullInfoDto receiver = getUserById(receiverId);
-            if (receiver == null) {
+            if (receiver.getId() == null) {
                 log.error("Failed to find user with id = {}", receiverId);
                 return;
             }
@@ -112,6 +113,10 @@ public class NotificationsManager {
     }
 
     private UserFullInfoDto getUserById(Long userId) {
-        return userClient.getUser(userId);
+        ResponseEntity<UserFullInfoDto> response = userClient.getUser(userId);
+        if (response != null && response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+        return null;
     }
 }

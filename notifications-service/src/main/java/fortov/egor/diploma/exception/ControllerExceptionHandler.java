@@ -23,16 +23,6 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 
-    @ExceptionHandler(NotValidIdException.class)
-    public ResponseEntity<?> notValidIdException(NotValidIdException e) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("Некорректное значение", e.getMessage());
-
-        log.error(e.getStackTrace()[0].getMethodName() + ": " + e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -43,13 +33,13 @@ public class ControllerExceptionHandler {
     }
 
     // Обработка всех остальных исключений
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleAllExceptions(Exception e) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("Internal exception occured", e.getMessage());
-
-        log.error(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleAllExceptions(Exception e) {
+//        Map<String, String> errors = new HashMap<>();
+//        errors.put("Internal exception occured", e.getMessage());
+//
+//        log.error(e.getMessage());
+//
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
+//    }
 }

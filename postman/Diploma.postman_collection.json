@@ -498,7 +498,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"start_time\": \"2024-01-01T12:00:00\",\r\n  \"name\": \"duty name\",\r\n  \"interval\": \"PT8H\",\r\n  \"ids\": [\r\n    1,\r\n    2,\r\n    3\r\n  ]\r\n}",
+							"raw": "{\r\n  \"start_time\": \"2024-01-01T12:00:00\",\r\n  \"name\": \"duty name\",\r\n  \"interval\": \"PT8H\",\r\n  \"ids\": [\r\n    1\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -527,11 +527,74 @@
 							"script": {
 								"exec": [
 									"\r",
+									"// // Пауза на 3 секунды (3000 мс)\r",
+									"// setTimeout(() => {\r",
+									"//     console.log(\"Пауза закончилась\");\r",
+									"// }, 3000);\r",
+									"\r",
 									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Определяем массив пользователей с различными значениями",
+									"const users = [",
+									"    {",
+									"        name: \"Вася Васильев\",",
+									"        email: \"vasya@example.com\",",
+									"        phone: \"+71123456789\",",
+									"        password: \"password33\"",
+									"    },",
+									"    {",
+									"        name: \"Петр Петров\",",
+									"        email: \"petr@example.com\",",
+									"        phone: \"+79123456780\",",
+									"        password: \"password2\"",
+									"    },",
+									"    {",
+									"        name: \"Светлана Светлова\",",
+									"        email: \"svetlana@example.com\",",
+									"        phone: \"+79123456781\",",
+									"        password: \"password3\"",
+									"    }",
+									"];",
+									"",
+									"// Функция для выполнения POST-запроса",
+									"function makeRequest(user) {",
+									"    pm.sendRequest({",
+									"        url: 'http://localhost:9090/users',",
+									"        method: 'POST',",
+									"        header: {",
+									"            'Content-Type': 'application/json'",
+									"        },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify(user)",
+									"        }",
+									"    }, function (err, res) {",
+									"        // Обработка ответа на запрос",
+									"        if (err) {",
+									"            console.error(err);",
+									"        } else {",
+									"            console.log('Response for', user.name, ':', res);",
+									"        }",
+									"    });",
+									"}",
+									"",
+									"// Выполняем запросы для каждого пользователя",
+									"users.forEach(user => {",
+									"    makeRequest(user);",
+									"});",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -549,7 +612,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"start_time\": \"2025-01-01T12:00:00\",\r\n  \"interval\": \"PT8H\",\r\n  \"ids\": [\r\n    4,\r\n    5,\r\n    6\r\n  ]\r\n}",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"start_time\": \"2025-01-01T12:00:00\",\r\n  \"interval\": \"PT8H\",\r\n  \"ids\": [\r\n    1, 2\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -611,7 +674,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:7070/duties/user/4",
+							"raw": "http://localhost:7070/duties/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -619,8 +682,7 @@
 							"port": "7070",
 							"path": [
 								"duties",
-								"user",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -721,7 +783,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:7070/duties/user/4",
+							"raw": "http://localhost:7070/duties/user/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -730,7 +792,7 @@
 							"path": [
 								"duties",
 								"user",
-								"4"
+								"2"
 							]
 						}
 					},
@@ -748,7 +810,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"\r",
 									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
 									"    pm.response.to.be.withBody;\r",
@@ -771,7 +832,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"type\": \"email\",\r\n  \"content\": \"Уведомление о новом сообщении.\",\r\n  \"time_to_show\": \"2024-10-15T16:30:00\",\r\n  \"interval_to_repeat\": \"PT1H\",\r\n  \"userId\": 12345,\r\n  \"immediately\": true\r\n}",
+							"raw": "{\r\n  \"type\": \"email\",\r\n  \"content\": \"Уведомление о новом сообщении.\",\r\n  \"time_to_show\": \"2024-10-15T16:30:00\",\r\n  \"interval_to_repeat\": \"PT1H\",\r\n  \"userId\": 1,\r\n  \"immediately\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -955,66 +1016,76 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"http://localhost:8080/\", \"variable_value\");\r",
 									"\r",
-									"const notificationsData = [\r",
-									"    { \r",
-									"        \"type\": \"email\", \r",
-									"        \"content\": \"Уведомление о новом сообщении.\",\r",
-									"        \"time_to_show\": \"2024-10-15T16:30:00\",\r",
-									"        \"interval_to_repeat\": \"PT1H\",\r",
-									"        \"userId\": 12345,\r",
-									"        \"immediately\": true\r",
-									"    },\r",
-									"    { \r",
-									"        \"type\": \"sms\", \r",
-									"        \"content\": \"Уведомление о новой акции.\",\r",
-									"        \"time_to_show\": \"2024-11-01T18:20:00\",\r",
-									"        \"interval_to_repeat\": \"P1D\",\r",
-									"        \"userId\": 67890,\r",
-									"        \"immediately\": false\r",
-									"    },\r",
-									"    { \r",
-									"        \"type\": \"push\", \r",
-									"        \"content\": \"Уведомление о завершении подписки.\",\r",
-									"        \"time_to_show\": \"2024-12-05T09:40:00\",\r",
-									"        \"interval_to_repeat\": \"PT2M\",\r",
-									"        \"userId\": 98765,\r",
-									"        \"immediately\": true\r",
-									"    }\r",
-									"];\r",
-									"\r",
-									"// Функция для отправки POST-запросов\r",
-									"function sendNotification(data) {\r",
-									"    const options = {\r",
-									"        url: pm.environment.get(\"baseUrl\") + \"notifications\", // Убедитесь, что указали правильный endpoint\r",
-									"        method: 'POST',\r",
-									"        header: {\r",
-									"            'Content-Type': 'application/json'\r",
-									"        },\r",
-									"        body: {\r",
-									"            mode: 'raw',\r",
-									"            raw: JSON.stringify(data)\r",
-									"        }\r",
-									"    };\r",
-									"\r",
-									"    pm.sendRequest(options, function (err, response) {\r",
-									"        if (err) {\r",
-									"            console.error('Ошибка при отправке запроса:', err);\r",
-									"        } else {\r",
-									"            console.log(`Запрос успешно отправлен. Статус-код: ${response.code}`);\r",
-									"        }\r",
-									"    });\r",
-									"}\r",
-									"\r",
-									"// Отправляем три уведомления\r",
-									"for (let i = 0; i < notificationsData.length; i++) {\r",
-									"    sendNotification(notificationsData[i]);\r",
-									"}\r",
 									"\r",
 									"pm.test(\"Ответ должен содержать код статуса 204\", function () {\r",
 									"    pm.response.to.have.status(204);\r",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"http://localhost:8080/\", \"variable_value\");",
+									"",
+									"const notificationsData = [",
+									"    { ",
+									"        \"type\": \"email\", ",
+									"        \"content\": \"Уведомление о новом сообщении.\",",
+									"        \"time_to_show\": \"2024-10-15T16:30:00\",",
+									"        \"interval_to_repeat\": \"PT1H\",",
+									"        \"userId\": 12345,",
+									"        \"immediately\": true",
+									"    },",
+									"    { ",
+									"        \"type\": \"sms\", ",
+									"        \"content\": \"Уведомление о новой акции.\",",
+									"        \"time_to_show\": \"2024-11-01T18:20:00\",",
+									"        \"interval_to_repeat\": \"P1D\",",
+									"        \"userId\": 67890,",
+									"        \"immediately\": false",
+									"    },",
+									"    { ",
+									"        \"type\": \"push\", ",
+									"        \"content\": \"Уведомление о завершении подписки.\",",
+									"        \"time_to_show\": \"2024-12-05T09:40:00\",",
+									"        \"interval_to_repeat\": \"PT2M\",",
+									"        \"userId\": 98765,",
+									"        \"immediately\": true",
+									"    }",
+									"];",
+									"",
+									"// Функция для отправки POST-запросов",
+									"function sendNotification(data) {",
+									"    const options = {",
+									"        url: pm.environment.get(\"baseUrl\") + \"notifications\", // Убедитесь, что указали правильный endpoint",
+									"        method: 'POST',",
+									"        header: {",
+									"            'Content-Type': 'application/json'",
+									"        },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify(data)",
+									"        }",
+									"    };",
+									"",
+									"    pm.sendRequest(options, function (err, response) {",
+									"        if (err) {",
+									"            console.error('Ошибка при отправке запроса:', err);",
+									"        } else {",
+									"            console.log(`Запрос успешно отправлен. Статус-код: ${response.code}`);",
+									"        }",
+									"    });",
+									"}",
+									"",
+									"// Отправляем три уведомления",
+									"for (let i = 0; i < notificationsData.length; i++) {",
+									"    sendNotification(notificationsData[i]);",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
