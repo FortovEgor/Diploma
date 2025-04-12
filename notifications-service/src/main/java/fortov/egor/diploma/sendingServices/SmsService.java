@@ -47,7 +47,7 @@ public class SmsService extends SendingServiceTemplate {
                 new PhoneNumber(receiver.getPhone()),
                 new PhoneNumber(twilioPhoneNumber),
                 content
-        ).create();  // todo: messege.send() ?
+        ).create();
         log.debug("message with content {} sent to {}", content, receiver);
     }
 }

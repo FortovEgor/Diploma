@@ -36,7 +36,11 @@ public class CallService extends SendingServiceTemplate {
         Call call = Call.creator(
                 new PhoneNumber(receiver.getPhone()),
                 new PhoneNumber(twilioPhoneNumber),
-                new com.twilio.type.Twiml("<Response><Say>" + content + "</Say></Response>")
+                new com.twilio.type.Twiml("<Response><Say voice=\"woman\">" + content + "</Say><Play>http://demo.twilio.com/docs/classic.mp3</Play></Response>")
+                // <Response>
+                //<Say voice="woman">Thanks for trying our documentation. Enjoy!</Say>
+                //<Play>http://demo.twilio.com/docs/classic.mp3</Play>
+                //</Response>
         ).create();
 
         System.out.println("Call initiated: " + call.getSid());
