@@ -10,17 +10,17 @@ import java.time.Duration;
 @AllArgsConstructor
 public class CreateNotificationRequest {
 
-    @NotNull
+    @NotNull(message = "Уведомление должно иметь тип")
     private String type;
 
-    @NotNull
+    @NotNull(message = "Уведомление должно содержать контент")
     private String content;
 
     private String time_to_show;
 
     private Duration interval_to_repeat;
 
-    @NotNull
+    @NotNull(message = "Уведомление должно быть назначено кому-либо")
     private Long userId;
 
     private Boolean immediately;
