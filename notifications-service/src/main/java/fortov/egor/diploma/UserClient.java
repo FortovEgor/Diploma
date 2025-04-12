@@ -2,10 +2,13 @@ package fortov.egor.diploma;
 
 import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
@@ -32,13 +35,18 @@ public class UserClient {
         this.rest = rest;
     }
 
-    public UserFullInfoDto getUser(Long userId) {
+    public ResponseEntity<UserFullInfoDto> getUser(Long userId) {
         if (userId < 0) {
             log.info("user id can not be negative; http request aborted");
             return null;
         }
-        ResponseEntity<UserFullInfoDto> response = rest
-                .exchange("/users/" + userId, HttpMethod.GET, null, new ParameterizedTypeReference<UserFullInfoDto>() {});
-        return response.getBody();
+        try {
+            ResponseEntity<UserFullInfoDto> response = rest
+                    .exchange("/users/info/" + userId, HttpMethod.GET, null, new ParameterizedTypeReference<UserFullInfoDto>() {});
+            return response;
+        } catch (Exception e) {
+            log.error("error happened while getting user with id = " + userId + "; " + e.getMessage());
+            return null;
+        }
     }
 }
