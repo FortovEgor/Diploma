@@ -85,7 +85,7 @@ class UserControllerTest {
                             .content(mapper.writeValueAsString(request))
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is5xxServerError());
+                    .andExpect(status().is4xxClientError());
         }
 
         @Test
@@ -97,7 +97,7 @@ class UserControllerTest {
                             .content(mapper.writeValueAsString(request))
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is5xxServerError());
+                    .andExpect(status().is4xxClientError());
         }
 
         @Test
@@ -109,7 +109,7 @@ class UserControllerTest {
                             .content(mapper.writeValueAsString(request))
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is5xxServerError());
+                    .andExpect(status().is4xxClientError());
         }
 
         @Test
@@ -121,7 +121,7 @@ class UserControllerTest {
                             .content(mapper.writeValueAsString(request))
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is5xxServerError());
+                    .andExpect(status().is4xxClientError());
         }
     }
 
