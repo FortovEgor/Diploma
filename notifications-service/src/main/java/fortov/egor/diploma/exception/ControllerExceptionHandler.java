@@ -33,13 +33,13 @@ public class ControllerExceptionHandler {
     }
 
     // Обработка всех остальных исключений
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<?> handleAllExceptions(Exception e) {
-//        Map<String, String> errors = new HashMap<>();
-//        errors.put("Internal exception occured", e.getMessage());
-//
-//        log.error(e.getMessage());
-//
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleAllExceptions(Exception e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Error", "Internal exception occured");  //  for DEBUG use `e.getMessage()` instead
+
+        log.error(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
+    }
 }

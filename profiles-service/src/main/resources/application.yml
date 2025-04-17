@@ -20,9 +20,8 @@ spring:
 server:
   port: 9090
   error:
-    include-stacktrace: always
+    include-stacktrace: never
 
-springdoc:
   api-docs:
     path: /api-docs
   swagger-ui:

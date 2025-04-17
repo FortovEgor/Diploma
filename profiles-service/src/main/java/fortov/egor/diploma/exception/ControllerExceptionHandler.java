@@ -23,14 +23,24 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 
-    @ExceptionHandler(NotValidIdException.class)
-    public ResponseEntity<?> notValidIdException(NotValidIdException e) {
+    @ExceptionHandler(NotValidInputParamException.class)
+    public ResponseEntity<?> notValidInputParamException(NotValidInputParamException e) {
         Map<String, String> errors = new HashMap<>();
         errors.put("Некорректное значение", e.getMessage());
 
         log.error(e.getStackTrace()[0].getMethodName() + ": " + e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> conflictException(ConflictException e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Конфликт", e.getMessage());
+
+        log.error(e.getStackTrace()[0].getMethodName() + ": " + e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -46,7 +56,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllExceptions(Exception e) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("Internal exception occured", e.getMessage());
+        errors.put("Error", "Internal exception occured");  //  for DEBUG use `e.getMessage()` instead
 
         log.error(e.getMessage());
 

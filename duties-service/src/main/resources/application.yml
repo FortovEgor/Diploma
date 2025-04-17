@@ -19,7 +19,7 @@ spring:
 server:
   port: 7070
   error:
-    include-stacktrace: always
+    include-stacktrace: never
 
 management:
   endpoints:

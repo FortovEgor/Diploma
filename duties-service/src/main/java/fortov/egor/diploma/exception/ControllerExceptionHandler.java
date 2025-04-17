@@ -38,7 +38,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllExceptions(Exception e) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("Internal exception occured", e.getMessage());
+        errors.put("Error", "Internal exception occured");  //  for DEBUG use `e.getMessage()` instead
 
         log.error(e.getMessage());
 
