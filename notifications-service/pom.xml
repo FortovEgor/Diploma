@@ -119,6 +119,13 @@
             <artifactId>twilio</artifactId>
             <version>8.24.0</version> <!-- Проверьте последнюю версию на Maven Central -->
         </dependency>
+
+        <!-- for sending sms: -->
+        <dependency>
+            <groupId>ru.smsaero</groupId>
+            <artifactId>smsaero</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
