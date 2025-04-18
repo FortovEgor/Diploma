@@ -1,10 +1,13 @@
 package fortov.egor.diploma.user;
 
+import fortov.egor.diploma.exception.ConflictException;
+import fortov.egor.diploma.exception.DBException;
 import fortov.egor.diploma.exception.NotFoundException;
-import fortov.egor.diploma.exception.NotValidIdException;
+import fortov.egor.diploma.exception.NotValidInputParamException;
 import fortov.egor.diploma.user.dto.NewUserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,19 +24,35 @@ public class UserService {
     @Transactional
     public User createUser(NewUserRequest request) {
         log.info("creating user: {}", request);
-        User user = mapper.toUser(request);
-        return repo.save(user);
+
+        User user;
+        try {
+            user = repo.save(mapper.toUser(request));
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("user with such email or phone already exists");
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
+        return user;
     }
 
     @Transactional
     public User updateUser(User user) {
-        if (user.getId() == null || user.getId() < 0) {
-            throw new NotValidIdException();
-        }
         log.info("updating user with id = {}");
-        User currentUserData = repo.findUserById(user.getId());
+        if (user.getId() == null || user.getId() < 0) {
+            throw new NotValidInputParamException("id должен быть > ноля");
+        }
+
+        User currentUserData;
+        try {
+            currentUserData = repo.findUserById(user.getId());
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (currentUserData == null) {
-            throw new NotFoundException("No user with such id!");
+            throw new NotFoundException("No user with such id");
         }
         if (user.getName() == null) {
             user.setName(currentUserData.getName());
@@ -56,38 +75,69 @@ public class UserService {
         if (user.getAbout() == null) {
             user.setAbout(currentUserData.getAbout());
         }
-        return repo.save(user);
+
+        try {
+            user = repo.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("user with such email or phone already exists");
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
+        return user;
     }
 
     public User getUserById(Long id) {
         log.info("getting user with id = {}", id);
         if (id <= 0) {
-            throw new NotValidIdException();
+            throw new NotValidInputParamException("id должен быть > ноля");
         }
 
-        User possibleUser = repo.findUserById(id);
-        log.info("user {} got from DB", possibleUser);
+        User possibleUser;
+        try {
+            possibleUser = repo.findUserById(id);
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (possibleUser == null) {
             throw new NotFoundException("Пользователь не найден");
         }
+
+        log.info("user {} got from DB", possibleUser);
         return possibleUser;
     }
 
     public List<User> getUsersByName(String name) {
         log.info("getting users by name = {}", name);
-        List<User> users = repo.findUsersByName(name);
+
+        List<User> users;
+        try {
+            users = repo.findUsersByName(name);
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (users == null) {
             throw new NotFoundException("Failed to find any users with name " + name);
         }
+
         return users;
     }
 
     public List<Long> getNotExistingUserIds(List<Long> ids) {
         log.info("getting not existing user ids from ids = {}", ids);
-        List<Long> existingIds = repo.findExistingUserIds(ids);
+        List<Long> existingIds;
+        try {
+            existingIds = repo.findExistingUserIds(ids);
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (existingIds == null) {
             throw new NotFoundException("Failed to find any users with id from " + ids);
         }
+
         return ids.stream()
                 .filter((id) -> !existingIds.contains(id))
                 .toList();
@@ -95,7 +145,13 @@ public class UserService {
 
     public Long getUserIdByEmailAndPassword(String email, String password) {
         log.info("getting user ids by email = {} & password = {}", email, password);
-        Long id =  repo.getIdByEmailAndPassword(email, password);
+        Long id;
+        try {
+            id = repo.getIdByEmailAndPassword(email, password);
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (id == null) {
             throw new NotFoundException("Failed to find user with email = " + email + " and password = " + password);
         }
@@ -104,7 +160,13 @@ public class UserService {
 
     public List<User> getUsersById(List<Long> ids) {
         log.info("getting users by ids = {}", ids);
-        List<User> users = repo.getUsersById(ids);
+        List<User> users;
+        try {
+            users = repo.getUsersById(ids);
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (users == null) {
             throw new NotFoundException("Failed to find any users with ids = " + ids);
         }
@@ -113,7 +175,13 @@ public class UserService {
 
     public List<User> getAllUsers() {
         log.info("getting all users...");
-        List<User> users = repo.getAllUsers();
+        List<User> users;
+        try {
+            users = repo.getAllUsers();
+        } catch (Exception e) {
+            throw new DBException();
+        }
+
         if (users == null) {
             throw new NotFoundException("Failed to find any users");
         }

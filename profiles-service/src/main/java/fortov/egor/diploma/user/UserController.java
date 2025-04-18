@@ -29,8 +29,7 @@ public class UserController {
 
     @PutMapping
     public Long put(@RequestBody User user) {
-        Long res = userService.updateUser(user).getId();
-        return res;
+        return userService.updateUser(user).getId();
     }
 
     @GetMapping("/info/{id}")

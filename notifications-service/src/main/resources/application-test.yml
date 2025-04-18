@@ -32,7 +32,7 @@ logging:
 server:
   port: 8080
   error:
-    include-stacktrace: always
+    include-stacktrace: never
 
 users:
   url: http://profiles-service:9090
