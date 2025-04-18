@@ -29,7 +29,7 @@ public class SmsService extends SendingServiceTemplate {
             JSONObject sendResult = client.SendSms(phone, header + messageBody);
             log.info("result of sending sms to {}: {}", to, sendResult);
         } catch (Exception e) {
-            log.info("sending sms to {} failed: {}", to, e.getMessage());
+            log.error("sending sms to {} failed: {}", to, e.getMessage());
         }
     }
 
