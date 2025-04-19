@@ -7,15 +7,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://duties-db/duty_db
       SPRING_DATASOURCE_USERNAME: duty_user
       SPRING_DATASOURCE_PASSWORD: duty_pass
-    healthcheck:
-      test: curl -f http://duties-service/actuator/health || exit 1
-      timeout: 10s
-      interval: 7s
-      retries: 10
     ports:
       - "7070:7070"
     depends_on:
       - duties-db
+    healthcheck:
+#      test: curl -f http://duties-service/actuator/health || exit 1
+      test: ["CMD", "curl", "--fail", "http://localhost:7070/actuator/health"]
+      timeout: 10s
+      interval: 7s
+      retries: 10
     restart: on-failure
 
   notifications-service:
@@ -25,16 +26,17 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://notifications-db/notification_db
       SPRING_DATASOURCE_USERNAME: notification_user
       SPRING_DATASOURCE_PASSWORD: notification_pass
-    healthcheck:
-      test: curl -f http://notifications-service/actuator/health || exit 1
-      timeout: 10s
-      interval: 7s
-      retries: 10
     ports:
       - "8080:8080"
     depends_on:
       - notifications-db
       - profiles-service
+    healthcheck:
+#      test: curl -f http://notifications-service/actuator/health || exit 1
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/actuator/health"]
+      timeout: 10s
+      interval: 7s
+      retries: 10
     restart: on-failure
 
   profiles-service:
@@ -44,15 +46,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://profiles-db/profile_db
       SPRING_DATASOURCE_USERNAME: profile_user
       SPRING_DATASOURCE_PASSWORD: profile_pass
-    healthcheck:
-      test: curl -f http://profiles-service/actuator/health || exit 1
-      timeout: 10s
-      interval: 7s
-      retries: 10
     ports:
       - "9090:9090"
     depends_on:
       - profiles-db
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:9090/actuator/health"]
+#      test: curl -f http://profiles-service/actuator/health || exit 1
+      timeout: 10s
+      interval: 7s
+      retries: 10
     restart: on-failure
 
   ########## DB services ##########
