@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS notifications;
+-- DROP TABLE IF EXISTS notifications;
 
-CREATE TABLE notifications (
+CREATE TABLE IF NOT EXISTS notifications (
     id BIGSERIAL PRIMARY KEY,
     type VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
