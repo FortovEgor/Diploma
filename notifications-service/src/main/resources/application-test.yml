@@ -12,14 +12,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    show-sql: true
   sql:
     init:
       mode: always
-  mail:  # todo: place correct actual data
+  mail:
     host: smtp.gmail.com
     port: 587
-    username: your-email@gmail.com
-    password: your-email-password
+    username: argus.treker@gmail.com
+    password: INSERT_PASSWORD_HERE
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -29,19 +30,18 @@ logging:
     org.springframework.jdbc.core: DEBUG
     org.springframework.jdbc.datasource.DataSourceUtils: DEBUG
 
+users:
+  url: http://profiles-service:9090
+
 server:
   port: 8080
   error:
     include-stacktrace: never
 
-users:
-  url: http://profiles-service:9090
+aero-sms:
+  email: argus.treker@gmail.com
+  key: INSERT_KEY_HERE
 
-# NOTE: first register account to use the functional
-twilio:  # todo: place actual data here
-  account-sid: your_account_sid
-  auth-token: your_auth_token
-  phone-number: your_twilio_phone_number
 
 management:
   endpoints:
