@@ -198,7 +198,11 @@ public class DutyService {
         long diffBetweenDutyStartAndNowNanosWithoutCycles = diffBetweenDutyStartAndNowNanos % dutyFullIntervalNanos;
         long userDutyInterval = dutyFullIntervalNanos / duty.getIds().length;
 
-        return diffBetweenDutyStartAndNowNanosWithoutCycles / userDutyInterval;
+        long currentUserIndex = diffBetweenDutyStartAndNowNanosWithoutCycles / userDutyInterval;
+        if (currentUserIndex < 0 || currentUserIndex >= duty.getIds().length) {
+            return null;
+        }
+        return duty.getIds()[(int) currentUserIndex];
     }
 
     private List<Long> getNotExistingIds(Long[] possibleIds) {
