@@ -32,6 +32,16 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> conflictException(ConflictException e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Конфликт", e.getMessage());
+
+        log.error(e.getStackTrace()[0].getMethodName() + ": " + e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
+    }
+
     // Обработка всех остальных исключений
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllExceptions(Exception e) {
