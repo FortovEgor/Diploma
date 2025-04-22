@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 public class DutyDto {
     Long id;
 
+    private String name;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime start_time;
 

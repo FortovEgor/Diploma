@@ -46,6 +46,7 @@ public class DutyService {
 
         return DutyDto.builder()
                 .id(duty.getId())
+                .name(duty.getName())
                 .start_time(duty.getStart_time())
                 .interval(duty.getInterval())
                 .ids(duty.getIds())
@@ -59,6 +60,7 @@ public class DutyService {
         return duties.stream()
                 .map(duty -> DutyDto.builder()
                         .id(duty.getId())
+                        .name(duty.getName())
                         .start_time(duty.getStart_time())
                         .interval(duty.getInterval())
                         .ids(duty.getIds())
