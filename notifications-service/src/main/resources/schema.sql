@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     user_id BIGINT NOT NULL,
     immediately BOOLEAN DEFAULT false
 
-    CONSTRAINT type_values CHECK (type IN ('sms', 'email', 'call')),
+    CONSTRAINT type_values CHECK (type IN ('sms', 'email')),
     CONSTRAINT check_immediately_timeToShow CHECK (
         NOT (immediately = false AND time_to_show IS NULL)  -- иначе уведомление никогда не будет отправлено
     )
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 COMMENT ON TABLE notifications IS 'Таблица уведомлений';
 COMMENT ON COLUMN notifications.id IS 'Идентификатор уведомления';
-COMMENT ON COLUMN notifications.type IS 'Тип уведомления';
+COMMENT ON COLUMN notifications.type IS 'Тип уведомления (sms / email)';
 COMMENT ON COLUMN notifications.content IS 'Содержание уведомления';
 COMMENT ON COLUMN notifications.time_to_show IS 'Дата и время показа первого уведомления';
 COMMENT ON COLUMN notifications.interval_to_repeat IS 'Интервал, через который уведомление будет повторено';

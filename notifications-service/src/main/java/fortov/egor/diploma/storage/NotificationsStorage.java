@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface NotificationsStorage {
     Notification save(Notification notification);
+
+    Notification update(Notification notification);
     void deleteById(Long NotificationId);
 
     void deleteAllById(List<Long> notificationsIds);

@@ -68,7 +68,7 @@ class NotificationsControllerTest {
             CreateNotificationRequest request = new CreateNotificationRequest(
                     null,
                     "This is a notification content",
-                    LocalDateTime.now().toString(),
+                    LocalDateTime.now(),
                     Duration.ofMinutes(5),
                     1L,
                     false);
@@ -89,7 +89,7 @@ class NotificationsControllerTest {
             CreateNotificationRequest request = new CreateNotificationRequest(
                     "sms",
                     "This is a notification content",
-                    LocalDateTime.now().toString(),
+                    LocalDateTime.now(),
                     Duration.ofMinutes(5),
                     1L,
                     false);
@@ -118,7 +118,7 @@ class NotificationsControllerTest {
             CreateNotificationRequest request = new CreateNotificationRequest(
                     "some type",
                     null,
-                    LocalDateTime.now().toString(),
+                    LocalDateTime.now(),
                     Duration.ofMinutes(5),
                     1L,
                     false);
@@ -139,7 +139,7 @@ class NotificationsControllerTest {
             CreateNotificationRequest request = new CreateNotificationRequest(
                     "some type",
                     "some content",
-                    LocalDateTime.now().toString(),
+                    LocalDateTime.now(),
                     Duration.ofMinutes(5),
                     null,
                     false);

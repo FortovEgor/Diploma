@@ -39,7 +39,7 @@ public class UserService {
 
     @Transactional
     public User updateUser(User user) {
-        log.info("updating user with id = {}");
+        log.info("updating user with id = {}", user.getId());
         if (user.getId() == null || user.getId() < 0) {
             throw new NotValidInputParamException("id должен быть > ноля");
         }
@@ -118,7 +118,7 @@ public class UserService {
             throw new DBException();
         }
 
-        if (users == null) {
+        if (users == null || users.isEmpty()) {
             throw new NotFoundException("Failed to find any users with name " + name);
         }
 
@@ -132,10 +132,6 @@ public class UserService {
             existingIds = repo.findExistingUserIds(ids);
         } catch (Exception e) {
             throw new DBException();
-        }
-
-        if (existingIds == null) {
-            throw new NotFoundException("Failed to find any users with id from " + ids);
         }
 
         return ids.stream()
@@ -167,7 +163,7 @@ public class UserService {
             throw new DBException();
         }
 
-        if (users == null) {
+        if (users == null || users.isEmpty()) {
             throw new NotFoundException("Failed to find any users with ids = " + ids);
         }
         return users;
@@ -182,7 +178,7 @@ public class UserService {
             throw new DBException();
         }
 
-        if (users == null) {
+        if (users == null || users.isEmpty()) {
             throw new NotFoundException("Failed to find any users");
         }
         return users;
