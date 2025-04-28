@@ -1,17 +1,22 @@
 package fortov.egor.diploma.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
+//@DynamicInsert // ignore null fields
 @AllArgsConstructor
 public class UpdateNotificationRequest {
+    @NotNull
     private Long id;
 
+    @NotificationType  // надо ???
     private String type;
 
     private String content;

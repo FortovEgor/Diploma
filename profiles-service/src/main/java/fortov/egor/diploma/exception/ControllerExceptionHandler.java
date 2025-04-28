@@ -3,6 +3,7 @@ package fortov.egor.diploma.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,13 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(HttpMessageConversionException.class)
+    public ResponseEntity<Map<String, String>> handleFormatValidationExceptions(HttpMessageConversionException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "incorrect argument format");
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFoundException(NotFoundException e) {

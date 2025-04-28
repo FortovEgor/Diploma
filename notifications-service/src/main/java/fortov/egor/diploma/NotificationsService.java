@@ -9,8 +9,6 @@ import fortov.egor.diploma.storage.NotificationsStorage;
 import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -44,7 +42,14 @@ public class NotificationsService {
             throw new ConflictException("incorrect input data");
         }
 
-        Notification notification = repo.save(notificationFromRequest);
+        Notification notification;
+        try {
+            notification = repo.save(notificationFromRequest);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("incorrect input data");
+        } catch (Exception e) {
+            throw new DBException();
+        }
 
         manager.registerNotification(notification);
         return notification;
@@ -94,7 +99,14 @@ public class NotificationsService {
             throw new ConflictException("incorrect input data");
         }
 
-        Notification notificationResult = repo.save(notificationFromRequest);
+        Notification notificationResult;
+        try {
+            notificationResult = repo.update(notificationFromRequest);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("incorrect input data");
+        } catch (Exception e) {
+            throw new DBException();
+        }
 
         manager.updateNotification(notificationResult);
         return notificationResult;
@@ -123,7 +135,7 @@ public class NotificationsService {
 
         List<Notification> notifications = repo.findAllById(notificationIds);
 
-        if (notifications.isEmpty()) {
+        if (notifications == null || notifications.isEmpty()) {
             throw new NotFoundException("Ни одного уведомления с id из " + notificationIds + " не найдено");
         }
         log.debug("deleting notifications with id = {} from DB", notificationIds);
@@ -139,7 +151,7 @@ public class NotificationsService {
 
         List<Notification> notifications = repo.findAllById(notificationIds);
 
-        if (notifications == null) {
+        if (notifications == null || notifications.isEmpty()) {
             throw new NotFoundException("Failed to find any notifications with id from " + notificationIds);
         }
         return notifications;

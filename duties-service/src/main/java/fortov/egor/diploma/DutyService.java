@@ -6,10 +6,13 @@ import fortov.egor.diploma.dto.UpdateDutyRequest;
 import fortov.egor.diploma.dto.UserDutyDto;
 import fortov.egor.diploma.storage.DutyStorage;
 import fortov.egor.diploma.exception.NotFoundException;
+import fortov.egor.diploma.user.UserFullInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,6 +131,12 @@ public class DutyService {
 
     public UserDutyDto getNextUserDuty(Long userId) {
         log.info("getting next user duty, user id = {}", userId);
+
+        ResponseEntity<UserFullInfoDto> response = userClient.getUser(userId);
+        if (response == null || !response.getStatusCode().is2xxSuccessful()) {
+            throw new NotFoundException("Failed to find user with id = " + userId);
+        }
+
         List<Duty> userDuties= dutyStorage.getUserDuties(userId);
         if (userDuties.isEmpty()) {
             return null;
