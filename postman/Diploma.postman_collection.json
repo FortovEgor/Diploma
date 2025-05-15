@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "671e6781-14a5-4871-b21e-adfd6c0a32d7",
+		"_postman_id": "6f395edb-4baa-4e2b-8876-840dd3b03f81",
 		"name": "Diploma",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40061988"
@@ -39,7 +39,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Иван Иванов\",\r\n  \"email\": \"ivan@example.com\",\r\n  \"phone\": \"+79123456789\",\r\n  \"password\": \"12345678\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Иван Иванов\",\r\n  \"email\": \"ivanivanov@example.com\",\r\n  \"phone\": \"+79898876511\",\r\n  \"password\": \"12345678\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -783,7 +783,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:7070/duties/user/2",
+							"raw": "http://localhost:7070/duties/user/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -792,7 +792,7 @@
 							"path": [
 								"duties",
 								"user",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -819,6 +819,16 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					],
 					"request": {
@@ -832,7 +842,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"type\": \"email\",\r\n  \"content\": \"Уведомление о новом сообщении.\",\r\n  \"time_to_show\": \"2024-10-15T16:30:00\",\r\n  \"interval_to_repeat\": \"PT1H\",\r\n  \"userId\": 1,\r\n  \"immediately\": true\r\n}",
+							"raw": "{\r\n  \"type\": \"email\",\r\n  \"content\": \"Уведомление о новом сообщении.\",\r\n  \"time_to_show\": \"2024-10-15T16:30:00\",\r\n  \"interval_to_repeat\": \"PT1H\",\r\n  \"userId\": 1,\r\n  \"immediately\": false\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -870,6 +880,13 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -883,7 +900,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"1\",\r\n  \"type\": \"sms\",\r\n  \"content\": \"New content\",\r\n  \"time_to_show\": \"2025-10-15T16:30:00\",\r\n  \"interval_to_repeat\": \"PT1H\",\r\n  \"userId\": 1,\r\n  \"immediately\": false\r\n}",
+							"raw": "{\r\n  \"id\": \"1\",\r\n  \"type\": \"sms\",\r\n  \"content\": \"New content\",\r\n  \"time_to_show\": \"2025-10-15T16:30:00\",\r\n  \"interval_to_repeat\": \"PT1H\",\r\n  \"userId\": 3,\r\n  \"immediately\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -966,10 +983,19 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"\r",
 									"pm.test(\"Ответ должен содержать код статуса 204 и данные в формате json\", function () {\r",
 									"    pm.response.to.have.status(204);\r",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1010,16 +1036,14 @@
 					"response": []
 				},
 				{
-					"name": "Удаление нескольких уведомлений",
+					"name": "Удаление несколько уведомлений",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"\r",
-									"\r",
-									"pm.test(\"Ответ должен содержать код статуса 204\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
+									"pm.test(\"Ответ должен содержать код статуса 204 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1030,61 +1054,39 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"http://localhost:8080/\", \"variable_value\");",
+									"const requestBody = {",
+									"  \"type\": \"email\",",
+									"  \"content\": \"Уведомление о новом сообщении.\",",
+									"  \"time_to_show\": \"2024-10-15T16:30:00\",",
+									"  \"interval_to_repeat\": \"PT1H\",",
+									"  \"userId\": 1,",
+									"  \"immediately\": false",
+									"};",
 									"",
-									"const notificationsData = [",
-									"    { ",
-									"        \"type\": \"email\", ",
-									"        \"content\": \"Уведомление о новом сообщении.\",",
-									"        \"time_to_show\": \"2024-10-15T16:30:00\",",
-									"        \"interval_to_repeat\": \"PT1H\",",
-									"        \"userId\": 12345,",
-									"        \"immediately\": true",
-									"    },",
-									"    { ",
-									"        \"type\": \"sms\", ",
-									"        \"content\": \"Уведомление о новой акции.\",",
-									"        \"time_to_show\": \"2024-11-01T18:20:00\",",
-									"        \"interval_to_repeat\": \"P1D\",",
-									"        \"userId\": 67890,",
-									"        \"immediately\": false",
-									"    },",
-									"    { ",
-									"        \"type\": \"push\", ",
-									"        \"content\": \"Уведомление о завершении подписки.\",",
-									"        \"time_to_show\": \"2024-12-05T09:40:00\",",
-									"        \"interval_to_repeat\": \"PT2M\",",
-									"        \"userId\": 98765,",
-									"        \"immediately\": true",
-									"    }",
-									"];",
-									"",
-									"// Функция для отправки POST-запросов",
-									"function sendNotification(data) {",
-									"    const options = {",
-									"        url: pm.environment.get(\"baseUrl\") + \"notifications\", // Убедитесь, что указали правильный endpoint",
+									"// Функция для отправки POST-запроса",
+									"function sendPostRequest() {",
+									"    pm.sendRequest({",
+									"        url: 'http://localhost:8080/notifications',",
 									"        method: 'POST',",
 									"        header: {",
 									"            'Content-Type': 'application/json'",
 									"        },",
 									"        body: {",
 									"            mode: 'raw',",
-									"            raw: JSON.stringify(data)",
+									"            raw: JSON.stringify(requestBody)",
 									"        }",
-									"    };",
-									"",
-									"    pm.sendRequest(options, function (err, response) {",
+									"    }, function (err, res) {",
 									"        if (err) {",
-									"            console.error('Ошибка при отправке запроса:', err);",
+									"            console.error(err);",
 									"        } else {",
-									"            console.log(`Запрос успешно отправлен. Статус-код: ${response.code}`);",
+									"            console.log(\"Response from request: ${res.status}, ${res.statusText}\");",
 									"        }",
 									"    });",
 									"}",
 									"",
-									"// Отправляем три уведомления",
-									"for (let i = 0; i < notificationsData.length; i++) {",
-									"    sendNotification(notificationsData[i]);",
+									"// Отправка трех POST-запросов",
+									"for (let i = 0; i < 2; i++) {",
+									"    sendPostRequest();",
 									"}"
 								],
 								"type": "text/javascript",
@@ -1103,7 +1105,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[\r\n  1,\r\n  2,\r\n  3\r\n]",
+							"raw": "[\n    2,3\n]",
 							"options": {
 								"raw": {
 									"language": "json"
