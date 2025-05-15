@@ -23,5 +23,3 @@ COMMENT ON COLUMN notifications.time_to_show IS 'Дата и время пока
 COMMENT ON COLUMN notifications.interval_to_repeat IS 'Интервал, через который уведомление будет повторено';
 COMMENT ON COLUMN notifications.user_id IS 'Идентификатор пользователя, которому будет отправлено уведомление';
 COMMENT ON COLUMN notifications.immediately IS 'Если true, то уведомление должно быть отправлено сейчас же';
-
--- todo: create indexes

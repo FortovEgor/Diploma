@@ -15,5 +15,3 @@ COMMENT ON COLUMN duties.id IS 'Идентификатор дежурства';
 COMMENT ON COLUMN duties.start_time IS 'Начало дежурства';
 COMMENT ON COLUMN duties.interval IS 'Сколько длится дежурство для одного пользователя';
 COMMENT ON COLUMN duties.ids IS 'id пользователей, которым назначено это дежурство'
-
--- todo: create indexes
